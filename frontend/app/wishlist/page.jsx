@@ -60,6 +60,7 @@ export default function WishlistPage() {
             {wishlist.map((product) => (
               <article className="product" key={product.id}>
                 <div className="product-image" style={{ backgroundImage: `url(${product.image})` }}>
+                  <Link href={`/products/${product.id}`} className="product-cover-link" aria-label={`View ${product.name}`} />
                   <button
                     className="wish active"
                     onClick={() => toggleWishlist(product.id)}
@@ -73,7 +74,9 @@ export default function WishlistPage() {
                 </div>
                 <div className="product-info">
                   <div>
-                    <h3>{product.name}</h3>
+                    <h3>
+                      <Link href={`/products/${product.id}`}>{product.name}</Link>
+                    </h3>
                     <p>{product.type}</p>
                   </div>
                   <strong>${product.price}</strong>
