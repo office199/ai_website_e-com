@@ -1,29 +1,88 @@
 # MODÉ e-commerce storefront
 
-A responsive Next.js fashion storefront with customer and admin dashboard concepts, plus an Express REST API.
+A Next.js storefront with an Express API, MongoDB persistence, and JWT authentication. The API has **no in-memory demo catalogue, carts, users, or orders**: all application records are read from and written to MongoDB.
 
-## Run it
+## Setup
+
+### 1. Configure MongoDB and secrets
+
+Create `backend/.env` from the example, then set a reachable MongoDB connection string and a long random JWT secret.
 
 ```bash
-npm install
-npm run dev       # Next.js storefront at http://localhost:3000
-npm run api       # Express API at http://localhost:4000
+cp backend/.env.example backend/.env
 ```
 
-## Pages
+```dotenv
+MONGODB_URI=mongodb://127.0.0.1:27017/mode-market
+JWT_SECRET=use-a-random-secret-at-least-32-characters-long
+CORS_ORIGIN=http://localhost:3000
+```
 
-- `/` — fashion storefront, category discovery, products, bag/wishlist interactions and newsletter
-- `/account` — customer dashboard with order tracking and wishlist preview
-- `/admin` — store management dashboard: revenue KPIs, recent orders, sales visualization and stock alerts
+For MongoDB Atlas, use the Atlas connection string for `MONGODB_URI`. Never commit `backend/.env`.
 
-## API
+### 2. Install packages
 
-The Express server provides in-memory demo APIs for products, carts, wishlists, orders and administrative product/inventory management. Start it with `npm run api`.
+```bash
+npm run install:all
+```
 
+### 3. Run the application
+
+Use two terminals:
+
+```bash
+npm run api       # Express API at http://localhost:4000
+npm run dev --prefix frontend  # Next.js storefront at http://localhost:3000
+```
+
+Or run both from the root:
+
+```bash
+npm run dev
+```
+
+If the frontend and API are deployed on separate hosts, set `NEXT_PUBLIC_API_URL` in the frontend environment to the public API URL and include the frontend URL in `CORS_ORIGIN`.
+
+## Authentication and authorization
+
+- `/signup` creates an account in MongoDB with a bcrypt password hash and returns a seven-day JWT.
+- `/login` validates the account and restores authenticated access.
+- The browser stores the JWT locally and sends it as a bearer token; protected routes are enforced again by the API.
+- Cart, wishlist, checkout, order history, and account pages require authentication.
+- The admin API and `/admin` require a MongoDB user with `role: "admin"`.
+
+To make the initial store owner an administrator, put their address in `ADMIN_EMAILS` **before they sign up**:
+
+```dotenv
+ADMIN_EMAILS=owner@example.com
+```
+
+Alternatively, set the role for an existing user in MongoDB:
+
+```javascript
+db.users.updateOne({ email: "owner@example.com" }, { $set: { role: "admin" } })
+```
+
+## MongoDB-backed API
+
+### Public
+
+- `GET /api/health`
 - `GET /api/products`, `GET /api/products/:id`
-- Cart CRUD: `/api/cart/:userId`
-- Wishlist CRUD: `/api/wishlist/:userId`
-- `GET/POST /api/orders`
-- Admin: `GET /api/admin/metrics`, `GET /api/admin/orders`, and product CRUD at `/api/admin/products`
+- `POST /api/auth/signup`, `POST /api/auth/login`
+- `POST /api/newsletter`
 
-For production, replace in-memory data with a database and add authentication/role authorization middleware to the API.
+### Authenticated
+
+- `GET /api/auth/me`
+- `GET/POST /api/cart`, `PATCH/DELETE /api/cart/:productId`
+- `GET/POST /api/wishlist`, `DELETE /api/wishlist/:productId`
+- `GET/POST /api/orders`
+
+### Administrator only
+
+- `GET /api/admin/metrics`, `GET /api/admin/orders`
+- `POST /api/admin/products`
+- `PATCH/DELETE /api/admin/products/:id`
+
+The catalogue begins empty. Sign up as an administrator and add live products through the admin console; they are then immediately available in the storefront.

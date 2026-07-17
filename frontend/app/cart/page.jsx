@@ -3,14 +3,18 @@
 import { useApp } from '../context/AppContext';
 import { Header, Footer } from '../components/HeaderFooter';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function CartPage() {
-  const { cart, updateCartQuantity, removeFromCart, checkout } = useApp();
+  const { cart, updateCartQuantity, removeFromCart, checkout, isAuthenticated, authLoading } = useApp();
   const [checkingOut, setCheckingOut] = useState(false);
   const [orderSuccess, setOrderSuccess] = useState(null);
   const router = useRouter();
+
+  useEffect(() => {
+    if (!authLoading && !isAuthenticated) router.replace('/login?next=/cart');
+  }, [authLoading, isAuthenticated, router]);
 
   const subtotal = cart.reduce((sum, item) => sum + (item.product?.price || 0) * item.quantity, 0);
   const shippingThreshold = 100;
@@ -24,12 +28,16 @@ export default function CartPage() {
   const handleCheckout = async () => {
     if (cart.length === 0) return;
     setCheckingOut(true);
-    const order = await checkout(total);
+    const order = await checkout();
     setCheckingOut(false);
     if (order) {
       setOrderSuccess(order);
     }
   };
+
+  if (authLoading || !isAuthenticated) {
+    return <main className="auth-loading">Loading your bag…</main>;
+  }
 
   return (
     <main>
@@ -54,7 +62,7 @@ export default function CartPage() {
             <span style={{ fontSize: '48px', display: 'block', marginBottom: '20px' }}>✓</span>
             <h2 style={{ font: '500 28px "Playfair Display"', margin: '0 0 10px' }}>Order Confirmed!</h2>
             <p style={{ fontSize: '14px', color: '#c9d2c9', margin: '0 0 24px', lineHeight: '1.6' }}>
-              Thank you for shopping with MODÉ. Your order <strong>{orderSuccess.id}</strong> has been successfully placed. We have sent a confirmation email.
+              Thank you for shopping with MODÉ. Your order <strong>{orderSuccess.id}</strong> has been successfully placed and is now visible in your account.
             </p>
             <div style={{ display: 'flex', gap: '15px', justifyContent: 'center' }}>
               <Link href="/account" className="button dark" style={{ background: '#fff', color: 'var(--ink)' }}>

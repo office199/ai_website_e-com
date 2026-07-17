@@ -58,12 +58,12 @@ function ProductGrid() {
         </div>
       ) : (
         <div className="product-grid">
-          {filteredProducts.map((p, i) => {
+          {filteredProducts.map((p) => {
             const isWish = wishlist.some(x => x.id === p.id);
             return (
               <article className="product" key={p.id}>
                 <div className="product-image" style={{ backgroundImage: `url(${p.image})` }}>
-                  <span className="product-tag">{i === 0 ? 'Bestseller' : 'New'}</span>
+                  <span className="product-tag">{p.stock > 0 ? 'Available' : 'Sold out'}</span>
                   <button
                     className={`wish ${isWish ? 'active' : ''}`}
                     onClick={() => toggleWishlist(p.id)}
@@ -71,8 +71,8 @@ function ProductGrid() {
                   >
                     ♥
                   </button>
-                  <button className="quick-add" onClick={() => addToCart(p.id, 1)}>
-                    Quick add <Icon name="plus" />
+                  <button className="quick-add" onClick={() => addToCart(p.id, 1)} disabled={p.stock < 1}>
+                    {p.stock > 0 ? 'Quick add' : 'Sold out'} <Icon name="plus" />
                   </button>
                 </div>
                 <div className="product-info">
@@ -93,7 +93,7 @@ function ProductGrid() {
 }
 
 function HomeContent() {
-  const { showToast } = useApp();
+  const { subscribe } = useApp();
 
   return (
     <main>
@@ -101,7 +101,7 @@ function HomeContent() {
       
       <section className="hero">
         <div className="hero-copy">
-          <p className="eyebrow">Spring / Summer 2025</p>
+          <p className="eyebrow">The latest collection</p>
           <h1>
             Made for the
             <br />
@@ -159,7 +159,7 @@ function HomeContent() {
 
       <ProductGrid />
 
-      <section className="story">
+      <section className="story" id="story">
         <div className="story-image"></div>
         <div className="story-copy">
           <p className="eyebrow">Our point of view</p>
@@ -175,12 +175,12 @@ function HomeContent() {
           <a className="text-link">Our approach <Icon name="arrow" /></a>
           <div className="numbers">
             <div>
-              <b>72%</b>
-              <span>lower impact materials</span>
+              <b>Considered</b>
+              <span>materials chosen with care</span>
             </div>
             <div>
-              <b>100%</b>
-              <span>made to be reworn</span>
+              <b>Enduring</b>
+              <span>pieces designed to be reworn</span>
             </div>
           </div>
         </div>
@@ -191,12 +191,14 @@ function HomeContent() {
         <h2>The good kind of inbox.</h2>
         <p>New pieces, fresh ideas, and 10% off your first order.</p>
         <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            showToast('✓ Welcome to MODÉ. Your 10% code is on its way!');
+          onSubmit={async (event) => {
+            event.preventDefault();
+            const form = event.currentTarget;
+            const subscribed = await subscribe(form.elements.email.value);
+            if (subscribed) form.reset();
           }}
         >
-          <input type="email" required placeholder="Your email address" />
+          <input type="email" name="email" required placeholder="Your email address" />
           <button type="submit">
             Join us <Icon name="arrow" />
           </button>

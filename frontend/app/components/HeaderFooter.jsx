@@ -9,16 +9,12 @@ function Icon({ name }) {
     heart: '♡',
     user: '◯',
     search: '⌕',
-    arrow: '→',
-    plus: '+'
   };
   return <span className={`icon ${name}`}>{icons[name]}</span>;
 }
 
 export function Header() {
-  const { cart, wishlist } = useApp();
-
-  // Sum of quantities of items in cart
+  const { cart, wishlist, user, authLoading, logout } = useApp();
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
@@ -37,26 +33,24 @@ export function Header() {
           <Link href="/?category=women#new">Women</Link>
           <Link href="/?category=men#new">Men</Link>
           <Link href="/?category=kids#new">Kids & baby</Link>
-          <Link href="/account">My Orders</Link>
-          <Link href="/admin">Admin Console</Link>
+          {user && <Link href="/account">My account</Link>}
+          {user?.role === 'admin' && <Link href="/admin">Admin</Link>}
         </div>
         <div className="actions">
-          <button aria-label="Search">
-            <Icon name="search" />
-          </button>
-          
-          <Link href="/wishlist" aria-label="Wishlist" style={{ position: 'relative', display: 'inline-block', padding: '4px' }}>
+          <button aria-label="Search"><Icon name="search" /></button>
+          <Link href={user ? '/wishlist' : '/login?next=/wishlist'} aria-label="Wishlist" style={{ position: 'relative', display: 'inline-block', padding: '4px' }}>
             <Icon name="heart" />
-            {wishlist.length > 0 && <i>{wishlist.length}</i>}
+            {user && wishlist.length > 0 && <i>{wishlist.length}</i>}
           </Link>
-          
-          <Link href="/account" aria-label="Account" style={{ display: 'inline-block', padding: '4px' }}>
-            <Icon name="user" />
-          </Link>
-          
-          <Link href="/cart" className="bag-button" aria-label="Bag">
+          {authLoading ? null : user ? (
+            <Link href="/account" aria-label="Account" style={{ display: 'inline-block', padding: '4px' }}><Icon name="user" /></Link>
+          ) : (
+            <Link href="/login" className="auth-nav-link">Sign in</Link>
+          )}
+          {user && <button className="signout-link hide-mobile" onClick={logout}>Sign out</button>}
+          <Link href={user ? '/cart' : '/login?next=/cart'} className="bag-button" aria-label="Bag">
             <Icon name="bag" />
-            <b>Bag ({cartCount})</b>
+            <b>Bag ({user ? cartCount : 0})</b>
           </Link>
         </div>
       </nav>
@@ -68,14 +62,8 @@ export function Footer() {
   return (
     <footer>
       <div>
-        <Link href="/" className="wordmark">
-          MODÉ<span>®</span>
-        </Link>
-        <p>
-          Better everyday things,
-          <br />
-          for every kind of day.
-        </p>
+        <Link href="/" className="wordmark">MODÉ<span>®</span></Link>
+        <p>Better everyday things,<br />for every kind of day.</p>
       </div>
       <div className="footer-links">
         <div>
@@ -83,24 +71,21 @@ export function Footer() {
           <Link href="/?category=women#new">Women</Link>
           <Link href="/?category=men#new">Men</Link>
           <Link href="/?category=kids#new">Kids & baby</Link>
-          <a href="#">Gift cards</a>
         </div>
         <div>
           <b>About</b>
-          <a href="#">Our story</a>
+          <a href="#story">Our story</a>
           <a href="#">Materials</a>
           <a href="#">Journal</a>
-          <a href="#">Careers</a>
         </div>
         <div>
-          <b>Help</b>
-          <a href="#">Shipping & returns</a>
-          <a href="#">Contact</a>
-          <a href="#">Size guide</a>
-          <a href="#">FAQ</a>
+          <b>Account</b>
+          <Link href={"/account"}>My account</Link>
+          <Link href="/wishlist">Wishlist</Link>
+          <Link href="/login">Sign in</Link>
         </div>
       </div>
-      <small>© 2025 MODÉ. All rights reserved.</small>
+      <small>© {new Date().getFullYear()} MODÉ. All rights reserved.</small>
     </footer>
   );
 }
