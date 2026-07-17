@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense, useEffect, useMemo, useState } from 'react';
+import { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useApp, getApiUrl } from '../../context/AppContext';
@@ -49,6 +49,120 @@ function RelatedCard({ product }) {
       </div>
       <small>{product.color}</small>
     </article>
+  );
+}
+
+function StarRow({ value }) {
+  const rounded = Math.round(value);
+  return <span className="pdp-stars" aria-label={`${value} of 5`}>{'★'.repeat(rounded)}{'☆'.repeat(5 - rounded)}</span>;
+}
+
+function Reviews({ productId }) {
+  const { user, authFetch, showToast } = useApp();
+  const [reviews, setReviews] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [form, setForm] = useState({ rating: 5, title: '', comment: '' });
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState('');
+  const [showForm, setShowForm] = useState(false);
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    try {
+      const res = await fetch(`${getApiUrl()}/api/products/${productId}/reviews`);
+      if (res.ok) setReviews(await res.json());
+    } catch (err) {
+      console.error('Unable to load reviews:', err);
+    } finally {
+      setLoading(false);
+    }
+  }, [productId]);
+
+  useEffect(() => { load(); }, [load]);
+
+  const average = reviews.length ? reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length : 0;
+
+  const submit = async (event) => {
+    event.preventDefault();
+    setSubmitting(true);
+    setError('');
+    try {
+      const res = await authFetch(`/api/products/${productId}/reviews`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+      if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || 'Unable to submit your review.');
+      showToast('Thanks! Your review has been submitted and is awaiting approval.');
+      setForm({ rating: 5, title: '', comment: '' });
+      setShowForm(false);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  return (
+    <section className="pdp-reviews">
+      <div className="section-heading">
+        <div>
+          <p className="eyebrow">Customer reviews</p>
+          <h2>What people are saying.</h2>
+        </div>
+        {user ? (
+          <button className="text-link" onClick={() => setShowForm((value) => !value)}>{showForm ? 'Cancel' : 'Write a review →'}</button>
+        ) : (
+          <Link href="/login" className="text-link">Sign in to review →</Link>
+        )}
+      </div>
+
+      {showForm && user && (
+        <form className="pdp-review-form" onSubmit={submit}>
+          {error && <div className="auth-error">{error}</div>}
+          <div className="pdp-review-field">
+            <span>Your rating</span>
+            <div className="pdp-review-rating">
+              {[1, 2, 3, 4, 5].map((n) => (
+                <button type="button" key={n} className={n <= form.rating ? 'on' : ''} onClick={() => setForm((d) => ({ ...d, rating: n }))} aria-label={`${n} star${n > 1 ? 's' : ''}`}>
+                  {n <= form.rating ? '★' : '☆'}
+                </button>
+              ))}
+            </div>
+          </div>
+          <input className="pdp-review-input" placeholder="Review title (optional)" value={form.title} onChange={(e) => setForm((d) => ({ ...d, title: e.target.value }))} />
+          <textarea className="pdp-review-input" rows={3} required placeholder="Share your thoughts on fit, fabric and quality…" value={form.comment} onChange={(e) => setForm((d) => ({ ...d, comment: e.target.value }))} />
+          <button type="submit" className="button dark" disabled={submitting}>{submitting ? 'Submitting…' : 'Submit review'}</button>
+        </form>
+      )}
+
+      {loading ? (
+        <p className="pdp-reviews-empty">Loading reviews…</p>
+      ) : !reviews.length ? (
+        <div className="pdp-reviews-empty">
+          <StarRow value={0} />
+          <p>No approved reviews yet. Be the first to share your experience.</p>
+        </div>
+      ) : (
+        <>
+          <div className="pdp-review-summary">
+            <strong>{average.toFixed(1)}</strong>
+            <StarRow value={average} />
+            <span>Based on {reviews.length} review{reviews.length === 1 ? '' : 's'}</span>
+          </div>
+          <div className="pdp-review-grid">
+            {reviews.map((review) => (
+              <article key={review.id} className="pdp-review-card">
+                <StarRow value={review.rating} />
+                {review.title && <h4>{review.title}</h4>}
+                <p>{review.comment}</p>
+                <span>{review.name}</span>
+              </article>
+            ))}
+          </div>
+        </>
+      )}
+    </section>
   );
 }
 
@@ -280,6 +394,8 @@ function ProductDetails() {
               </div>
             </div>
           </section>
+
+          <Reviews productId={product.id} />
 
           {related.length > 0 && (
             <section className="pdp-related">

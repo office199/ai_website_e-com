@@ -90,6 +90,8 @@ The documentation describes every public, authenticated, and administrator endpo
 
 - `GET /api/health`
 - `GET /api/products`, `GET /api/products/:id`
+- `GET /api/products/:id/reviews` (approved reviews only)
+- `GET /api/categories` (taxonomy managed from the admin console)
 - `POST /api/auth/signup`, `POST /api/auth/login`
 - `POST /api/newsletter`
 
@@ -99,11 +101,19 @@ The documentation describes every public, authenticated, and administrator endpo
 - `GET/POST /api/cart`, `PATCH/DELETE /api/cart/:productId`
 - `GET/POST /api/wishlist`, `DELETE /api/wishlist/:productId`
 - `GET/POST /api/orders`
+- `POST /api/products/:id/reviews` (creates a review pending moderation)
 
 ### Administrator only
 
+The `/admin` console is organised into Overview, Users, Products, Categories, Coupons and Reviews sections.
+
 - `GET /api/admin/metrics`, `GET /api/admin/orders`
-- `POST /api/admin/products`
-- `PATCH/DELETE /api/admin/products/:id`
+- **Users** — `GET /api/admin/users`, `PATCH /api/admin/users/:id` (name, role, activate/deactivate), `DELETE /api/admin/users/:id`
+- **Products** — `POST /api/admin/products`, `PATCH/DELETE /api/admin/products/:id`
+- **Categories** — `GET/POST /api/admin/categories`, `PATCH/DELETE /api/admin/categories/:id` (subcategories set a `parent`; deleting a category removes its subcategories)
+- **Coupons** — `GET/POST /api/admin/coupons`, `PATCH/DELETE /api/admin/coupons/:id`
+- **Reviews** — `GET /api/admin/reviews` (optional `?status=pending|approved|rejected`), `PATCH/DELETE /api/admin/reviews/:id`
+
+Deactivated users cannot log in until an administrator reactivates them.
 
 The catalogue begins empty. Sign up as an administrator and add live products through the admin console; they are then immediately available in the storefront.
