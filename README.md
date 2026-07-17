@@ -63,6 +63,15 @@ Alternatively, set the role for an existing user in MongoDB:
 db.users.updateOne({ email: "owner@example.com" }, { $set: { role: "admin" } })
 ```
 
+## API documentation (Swagger)
+
+Start the backend, then open the interactive Swagger UI:
+
+- **Swagger UI:** http://localhost:4000/api-docs
+- **OpenAPI JSON:** http://localhost:4000/api-docs.json
+
+The documentation describes every public, authenticated, and administrator endpoint. For protected endpoints, call `signup` or `login`, copy the returned `token`, click **Authorize** in Swagger UI, and enter the token (the Bearer scheme is added automatically). The source contract is `backend/openapi.js`.
+
 ## MongoDB-backed API
 
 ### Public

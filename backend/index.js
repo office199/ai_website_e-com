@@ -4,6 +4,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const swaggerUi = require('swagger-ui-express');
+const openapi = require('./openapi');
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -22,6 +24,13 @@ if (!JWT_SECRET || JWT_SECRET.length < 32) {
 
 app.disable('x-powered-by');
 app.use(express.json({ limit: '1mb' }));
+
+// Interactive API documentation. Open http://localhost:4000/api-docs in a browser.
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapi, {
+  customSiteTitle: 'MODÉ API documentation',
+  swaggerOptions: { persistAuthorization: true },
+}));
+app.get('/api-docs.json', (_req, res) => res.json(openapi));
 
 const allowedOrigins = (process.env.CORS_ORIGIN || 'http://localhost:3000')
   .split(',')
