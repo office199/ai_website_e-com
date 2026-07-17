@@ -3,6 +3,8 @@
 import { useApp } from '../context/AppContext';
 import { Header, Footer } from '../components/HeaderFooter';
 import Link from 'next/link';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 function Icon({ name }) {
   const icons = {
@@ -15,13 +17,21 @@ function Icon({ name }) {
 }
 
 export default function WishlistPage() {
-  const { wishlist, addToCart, toggleWishlist, loading } = useApp();
+  const { wishlist, addToCart, toggleWishlist, loading, isAuthenticated, authLoading } = useApp();
+  const router = useRouter();
 
-  const handleMoveToBag = (productId) => {
-    addToCart(productId, 1);
-    // Optionally remove from wishlist after adding to bag
-    toggleWishlist(productId);
+  useEffect(() => {
+    if (!authLoading && !isAuthenticated) router.replace('/login?next=/wishlist');
+  }, [authLoading, isAuthenticated, router]);
+
+  const handleMoveToBag = async (productId) => {
+    const added = await addToCart(productId, 1);
+    if (added) await toggleWishlist(productId);
   };
+
+  if (authLoading || !isAuthenticated) {
+    return <main className="auth-loading">Loading your wishlist…</main>;
+  }
 
   return (
     <main>
@@ -57,8 +67,8 @@ export default function WishlistPage() {
                   >
                     ♥
                   </button>
-                  <button className="quick-add" onClick={() => handleMoveToBag(product.id)}>
-                    Add to Bag <Icon name="plus" />
+                  <button className="quick-add" onClick={() => handleMoveToBag(product.id)} disabled={product.stock < 1}>
+                    {product.stock > 0 ? 'Add to Bag' : 'Sold out'} <Icon name="plus" />
                   </button>
                 </div>
                 <div className="product-info">
@@ -72,6 +82,7 @@ export default function WishlistPage() {
                   <small>{product.color}</small>
                   <button
                     onClick={() => handleMoveToBag(product.id)}
+                    disabled={product.stock < 1}
                     style={{
                       fontSize: '11px',
                       textDecoration: 'underline',
