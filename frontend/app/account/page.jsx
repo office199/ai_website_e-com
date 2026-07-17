@@ -114,8 +114,8 @@ export default function AccountPage() {
                     <div style={{ display: 'flex', gap: '10px', marginTop: '24px', overflowX: 'auto', paddingBottom: '5px' }}>
                       {wishlist.slice(0, 2).map((product) => (
                         <div key={product.id} style={{ minWidth: '110px', fontSize: '11px' }}>
-                          <div style={{ height: '115px', backgroundImage: `url(${product.image})`, backgroundSize: 'cover', backgroundPosition: 'center', marginBottom: '6px' }} />
-                          <b style={{ display: 'block', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{product.name}</b>
+                          <Link href={`/products/${product.id}`} style={{ display: 'block', height: '115px', backgroundImage: `url(${product.image})`, backgroundSize: 'cover', backgroundPosition: 'center', marginBottom: '6px' }} aria-label={`View ${product.name}`} />
+                          <Link href={`/products/${product.id}`} style={{ display: 'block', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', fontWeight: '500' }}>{product.name}</Link>
                           <span style={{ color: '#75756d' }}>{formatMoney(product.price)}</span>
                         </div>
                       ))}

@@ -63,6 +63,7 @@ function ProductGrid() {
             return (
               <article className="product" key={p.id}>
                 <div className="product-image" style={{ backgroundImage: `url(${p.image})` }}>
+                  <Link href={`/products/${p.id}`} className="product-cover-link" aria-label={`View ${p.name}`} />
                   <span className="product-tag">{p.stock > 0 ? 'Available' : 'Sold out'}</span>
                   <button
                     className={`wish ${isWish ? 'active' : ''}`}
@@ -77,7 +78,9 @@ function ProductGrid() {
                 </div>
                 <div className="product-info">
                   <div>
-                    <h3>{p.name}</h3>
+                    <h3>
+                      <Link href={`/products/${p.id}`}>{p.name}</Link>
+                    </h3>
                     <p>{p.type}</p>
                   </div>
                   <strong>${p.price}</strong>

@@ -108,7 +108,9 @@ export default function CartPage() {
                             border: '1px solid #efeeeb'
                           }} />
                           <div>
-                            <h3 style={{ fontSize: '14px', margin: '0 0 4px', fontWeight: '500' }}>{product.name}</h3>
+                            <h3 style={{ fontSize: '14px', margin: '0 0 4px', fontWeight: '500' }}>
+                              <Link href={`/products/${item.productId}`}>{product.name}</Link>
+                            </h3>
                             <p style={{ fontSize: '11px', color: '#74746e', margin: '0 0 8px' }}>
                               {product.color} · {product.category?.charAt(0).toUpperCase() + product.category?.slice(1)}
                             </p>
