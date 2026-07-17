@@ -63,6 +63,18 @@ Alternatively, set the role for an existing user in MongoDB:
 db.users.updateOne({ email: "owner@example.com" }, { $set: { role: "admin" } })
 ```
 
+Or use the bundled script to create a fresh administrator (or promote an
+existing account) without touching Mongo directly. Run it from the `backend/`
+folder with your `.env` in place:
+
+```bash
+cd backend
+npm run create:admin -- --email owner@example.com --password 'S3cure!pass' --name 'Store Owner'
+```
+
+Environment variables (`ADMIN_EMAIL`, `ADMIN_PASSWORD`, `ADMIN_NAME`) are
+supported as an alternative to CLI flags.
+
 ## API documentation (Swagger)
 
 Start the backend, then open the interactive Swagger UI:
