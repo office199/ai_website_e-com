@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useApp } from '../context/AppContext';
 import AdminSidebar from './components/AdminSidebar';
+import { AdminMobileNav, AdminTopbar } from './components/AdminTopbar';
 
 export default function AdminLayout({ children }) {
   const { user, authLoading } = useApp();
@@ -25,9 +26,13 @@ export default function AdminLayout({ children }) {
   }
 
   return (
-    <main className="admin">
+    <div className="admin-portal min-h-screen bg-[#fcf8fa] text-[#1b1b1d]">
       <AdminSidebar />
-      <section className="admin-main">{children}</section>
-    </main>
+      <div className="min-h-screen lg:ml-[260px]">
+        <AdminTopbar />
+        <main className="mx-auto w-full max-w-[1440px] px-4 pb-24 pt-6 sm:px-6 lg:px-6">{children}</main>
+      </div>
+      <AdminMobileNav />
+    </div>
   );
 }
