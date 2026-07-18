@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { getApiUrl, useApp } from '../../context/AppContext';
 import { AdminPageHead, EmptyState, Field, Modal, PageError, RowSpinner } from '../components/AdminUI';
+import Reveal from '../../components/motion/Reveal';
 
 const emptyProduct = { name: '', category: 'women', type: '', price: '', color: '', image: '', stock: '' };
 const formatMoney = (value) => `$${Number(value || 0).toFixed(2)}`;
@@ -85,6 +86,7 @@ export default function AdminProductsPage() {
 
   return (
     <>
+      <Reveal>
       <AdminPageHead eyebrow="Catalogue" title="Products" description="Create, edit and remove items from the store catalogue.">
         <button className="admin-btn primary" onClick={openAdd}>+ Add product</button>
       </AdminPageHead>
@@ -126,6 +128,7 @@ export default function AdminProductsPage() {
         )}
       </div>
 
+      </Reveal>
       <Modal open={Boolean(modal)} title={modal?.mode === 'edit' ? 'Edit product' : 'Add product'} onClose={() => setModal(null)}>
         <form onSubmit={submit} className="admin-form">
           {formError && <div className="auth-error">{formError}</div>}

@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useApp } from '../../context/AppContext';
 import { AdminPageHead, EmptyState, Field, Modal, PageError, Pill, RowSpinner } from '../components/AdminUI';
+import Reveal from '../../components/motion/Reveal';
 
 const emptyForm = { code: '', description: '', type: 'percent', value: '', minOrder: '', expiresAt: '', active: true };
 const formatDate = (value) => (value ? new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(new Date(value)) : '—');
@@ -94,6 +95,7 @@ export default function AdminCouponsPage() {
 
   return (
     <>
+      <Reveal>
       <AdminPageHead eyebrow="Promotions" title="Coupons" description="Create discount codes and control whether they are redeemable.">
         <button className="admin-btn primary" onClick={openAdd}>+ Add coupon</button>
       </AdminPageHead>
@@ -132,6 +134,7 @@ export default function AdminCouponsPage() {
         )}
       </div>
 
+      </Reveal>
       <Modal open={Boolean(modal)} title={modal?.mode === 'edit' ? 'Edit coupon' : 'Add coupon'} onClose={() => setModal(null)}>
         <form onSubmit={submit} className="admin-form">
           {formError && <div className="auth-error">{formError}</div>}

@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useApp } from '../context/AppContext';
+import Reveal from '../components/motion/Reveal';
 
 const formatDate = (value) => new Intl.DateTimeFormat('en-US', {
   month: 'short', day: 'numeric', year: 'numeric',
@@ -56,7 +57,7 @@ export default function AccountPage() {
       </header>
 
       <div className="dash-body">
-        <aside>
+        <Reveal as="aside">
           <p className="eyebrow">My account</p>
           <h2>Welcome back,<br /><em>{firstName}.</em></h2>
           <nav className="side-nav">
@@ -64,9 +65,9 @@ export default function AccountPage() {
             <button onClick={() => setActiveTab('Orders')} className={activeTab === 'Orders' ? 'selected' : ''}>Orders <small>{orders.length}</small></button>
             <Link href="/wishlist">Wishlist <small>{wishlist.length}</small></Link>
           </nav>
-        </aside>
+        </Reveal>
 
-        <section className="dashboard-content">
+        <Reveal as="section" className="dashboard-content">
           {activeTab === 'Overview' && (
             <>
               <div className="dash-title">
@@ -162,7 +163,7 @@ export default function AccountPage() {
               )}
             </div>
           )}
-        </section>
+        </Reveal>
       </div>
     </main>
   );

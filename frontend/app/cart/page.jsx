@@ -2,6 +2,8 @@
 
 import { useApp } from '../context/AppContext';
 import { Header, Footer } from '../components/HeaderFooter';
+import Reveal from '../components/motion/Reveal';
+import { Stagger, StaggerItem } from '../components/motion/Stagger';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -82,8 +84,9 @@ export default function CartPage() {
             </Link>
           </div>
         ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: '1.6fr 1fr', gap: '40px' }} className="admin-layout">
+          <Stagger className="admin-layout" style={{ display: 'grid', gridTemplateColumns: '1.6fr 1fr', gap: '40px' }}>
             {/* Cart Items List */}
+            <StaggerItem>
             <div style={{ background: '#fff', border: '1px solid var(--line)', padding: '24px' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                 <thead>
@@ -93,11 +96,11 @@ export default function CartPage() {
                     <th style={{ padding: '12px 8px', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.06em', color: '#777972', textAlign: 'right' }}>Total</th>
                   </tr>
                 </thead>
-                <tbody>
+                <Stagger as="tbody">
                   {cart.map((item) => {
                     const product = item.product || {};
                     return (
-                      <tr key={item.productId} style={{ borderBottom: '1px solid #efeeeb' }}>
+                      <StaggerItem as="tr" key={item.productId} style={{ borderBottom: '1px solid #efeeeb' }}>
                         <td style={{ padding: '20px 8px', display: 'flex', gap: '15px', alignItems: 'center' }}>
                           <div style={{
                             width: '80px',
@@ -142,10 +145,10 @@ export default function CartPage() {
                         <td style={{ padding: '20px 8px', textAlign: 'right', fontWeight: '500', fontSize: '14px' }}>
                           ${(product.price || 0) * item.quantity}
                         </td>
-                      </tr>
+                      </StaggerItem>
                     );
                   })}
-                </tbody>
+                </Stagger>
               </table>
               <div style={{ marginTop: '20px' }}>
                 <Link href="/" style={{ fontSize: '12px', borderBottom: '1px solid var(--ink)', paddingBottom: '3px' }}>
@@ -153,8 +156,10 @@ export default function CartPage() {
                 </Link>
               </div>
             </div>
+            </StaggerItem>
 
             {/* Order Summary */}
+            <StaggerItem>
             <div style={{ alignSelf: 'start' }}>
               <div style={{ background: 'var(--cream)', border: '1px solid var(--line)', padding: '30px' }}>
                 <h2 style={{ font: '500 20px "Playfair Display"', margin: '0 0 20px' }}>Order Summary</h2>
@@ -196,7 +201,8 @@ export default function CartPage() {
                 </div>
               </div>
             </div>
-          </div>
+            </StaggerItem>
+          </Stagger>
         )}
       </section>
 

@@ -5,6 +5,9 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useApp, getApiUrl } from '../../context/AppContext';
 import { Header, Footer } from '../../components/HeaderFooter';
+import Reveal from '../../components/motion/Reveal';
+import { Stagger, StaggerItem } from '../../components/motion/Stagger';
+import Parallax from '../../components/motion/Parallax';
 
 function Icon({ name }) {
   const icons = {
@@ -104,7 +107,7 @@ function Reviews({ productId }) {
   };
 
   return (
-    <section className="pdp-reviews">
+    <Reveal as="section" className="pdp-reviews" amount={0.2}>
       <div className="section-heading">
         <div>
           <p className="eyebrow">Customer reviews</p>
@@ -162,7 +165,7 @@ function Reviews({ productId }) {
           </div>
         </>
       )}
-    </section>
+    </Reveal>
   );
 }
 
@@ -279,12 +282,7 @@ function ProductDetails() {
             </nav>
 
             <div className="pdp-grid">
-              <div
-                className="pdp-media"
-                style={{ backgroundImage: `url(${product.image})` }}
-                role="img"
-                aria-label={product.name}
-              >
+              <Parallax className="pdp-media" backgroundImage={product.image} role="img" aria-label={product.name}>
                 <span className="product-tag">{soldOut ? 'Sold out' : 'Available'}</span>
                 <button
                   className={`pdp-wish ${isWish ? 'active' : ''}`}
@@ -296,9 +294,9 @@ function ProductDetails() {
                 <span className="pdp-image-label">
                   {capitalise(product.category)} — {product.color}
                 </span>
-              </div>
+              </Parallax>
 
-              <div className="pdp-info">
+              <Reveal className="pdp-info" amount={0.3}>
                 <p className="eyebrow">{capitalise(product.category)} collection</p>
                 <h1>{product.name}</h1>
                 <p className="pdp-type">{product.type}</p>
@@ -391,7 +389,7 @@ function ProductDetails() {
                   <span>Easy 30-day returns</span>
                   <span>Made to last</span>
                 </div>
-              </div>
+              </Reveal>
             </div>
           </section>
 
@@ -408,11 +406,13 @@ function ProductDetails() {
                   Shop {product.category} <Icon name="arrow" />
                 </Link>
               </div>
-              <div className="product-grid">
+              <Stagger className="product-grid">
                 {related.map((item) => (
-                  <RelatedCard product={item} key={item.id} />
+                  <StaggerItem key={item.id}>
+                    <RelatedCard product={item} />
+                  </StaggerItem>
                 ))}
-              </div>
+              </Stagger>
             </section>
           )}
         </>

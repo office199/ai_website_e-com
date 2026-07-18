@@ -4,6 +4,9 @@ import { Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useApp } from './context/AppContext';
 import { Header, Footer } from './components/HeaderFooter';
+import Reveal from './components/motion/Reveal';
+import { Stagger, StaggerItem } from './components/motion/Stagger';
+import Parallax from './components/motion/Parallax';
 import Link from 'next/link';
 
 function Icon({ name }) {
@@ -57,11 +60,11 @@ function ProductGrid() {
           <p className="text-[15px] text-[#74746e]">No pieces found in this category.</p>
         </div>
       ) : (
-        <div className="product-grid">
+        <Stagger className="product-grid">
           {filteredProducts.map((p) => {
             const isWish = wishlist.some(x => x.id === p.id);
             return (
-              <article className="product" key={p.id}>
+              <StaggerItem as="article" className="product" key={p.id}>
                 <div className="product-image" style={{ backgroundImage: `url(${p.image})` }}>
                   <Link href={`/products/${p.id}`} className="product-cover-link" aria-label={`View ${p.name}`} />
                   <span className="product-tag">{p.stock > 0 ? 'Available' : 'Sold out'}</span>
@@ -86,10 +89,10 @@ function ProductGrid() {
                   <strong>${p.price}</strong>
                 </div>
                 <small>{p.color}</small>
-              </article>
+              </StaggerItem>
             );
           })}
-        </div>
+        </Stagger>
       )}
     </section>
   );
@@ -103,68 +106,74 @@ function HomeContent() {
       <Header />
       
       <section className="hero">
-        <div className="hero-copy">
-          <p className="eyebrow">The latest collection</p>
-          <h1>
+        <Stagger className="hero-copy">
+          <StaggerItem as="p" className="eyebrow">The latest collection</StaggerItem>
+          <StaggerItem as="h1">
             Made for the
             <br />
             <em>in-between</em> moments.
-          </h1>
-          <p className="hero-text">
+          </StaggerItem>
+          <StaggerItem as="p" className="hero-text">
             Thoughtfully made pieces for a life lived fully — wherever the day takes you.
-          </p>
-          <div className="hero-actions">
+          </StaggerItem>
+          <StaggerItem as="div" className="hero-actions">
             <Link href="/?category=women#new" className="button dark">
               Shop women <Icon name="arrow" />
             </Link>
             <Link href="/?category=men#new" className="text-link">
               Shop men <Icon name="arrow" />
             </Link>
-          </div>
-        </div>
-        <div className="hero-image">
+          </StaggerItem>
+        </Stagger>
+        <Parallax backgroundImage="https://images.unsplash.com/photo-1525507119028-ed4c629a60a3?auto=format&fit=crop&w=1300&q=85">
           <div className="image-label">
             <span>01 — The everyday edit</span>
             <span>Scroll to explore ↓</span>
           </div>
-        </div>
+        </Parallax>
       </section>
 
-      <section className="categories">
-        <Link href="/?category=women#new" className="category cat-one">
-          <div>
-            <span>For her</span>
-            <h2>Women</h2>
-            <p>
-              Explore collection <Icon name="arrow" />
-            </p>
-          </div>
-        </Link>
-        <Link href="/?category=men#new" className="category cat-two">
-          <div>
-            <span>For him</span>
-            <h2>Men</h2>
-            <p>
-              Explore collection <Icon name="arrow" />
-            </p>
-          </div>
-        </Link>
-        <Link href="/?category=kids#new" className="category cat-three">
-          <div>
-            <span>For little ones</span>
-            <h2>Kids & baby</h2>
-            <p>
-              Explore collection <Icon name="arrow" />
-            </p>
-          </div>
-        </Link>
-      </section>
+      <Stagger className="categories">
+        <StaggerItem as="div" className="category cat-one">
+          <Link href="/?category=women#new" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', width: '100%', height: '100%' }}>
+            <div>
+              <span>For her</span>
+              <h2>Women</h2>
+              <p>
+                Explore collection <Icon name="arrow" />
+              </p>
+            </div>
+          </Link>
+        </StaggerItem>
+        <StaggerItem as="div" className="category cat-two">
+          <Link href="/?category=men#new" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', width: '100%', height: '100%' }}>
+            <div>
+              <span>For him</span>
+              <h2>Men</h2>
+              <p>
+                Explore collection <Icon name="arrow" />
+              </p>
+            </div>
+          </Link>
+        </StaggerItem>
+        <StaggerItem as="div" className="category cat-three">
+          <Link href="/?category=kids#new" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', width: '100%', height: '100%' }}>
+            <div>
+              <span>For little ones</span>
+              <h2>Kids & baby</h2>
+              <p>
+                Explore collection <Icon name="arrow" />
+              </p>
+            </div>
+          </Link>
+        </StaggerItem>
+      </Stagger>
 
       <ProductGrid />
 
       <section className="story" id="story">
-        <div className="story-image"></div>
-        <div className="story-copy">
+        <Parallax backgroundImage="https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?auto=format&fit=crop&w=1300&q=85" />
+        <Reveal className="story-copy" amount={0.3}>
           <p className="eyebrow">Our point of view</p>
           <h2>
             Less, but
@@ -186,10 +195,10 @@ function HomeContent() {
               <span>pieces designed to be reworn</span>
             </div>
           </div>
-        </div>
+        </Reveal>
       </section>
 
-      <section className="newsletter">
+      <Reveal as="section" className="newsletter" amount={0.3}>
         <p className="eyebrow">Stay in the know</p>
         <h2>The good kind of inbox.</h2>
         <p>New pieces, fresh ideas, and 10% off your first order.</p>
@@ -206,7 +215,7 @@ function HomeContent() {
             Join us <Icon name="arrow" />
           </button>
         </form>
-      </section>
+      </Reveal>
 
       <Footer />
     </main>
