@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useApp } from '../context/AppContext';
+import { SocialLinksToggle } from './SocialLinks';
 
 function Icon({ name }) {
   const icons = {
@@ -18,13 +19,13 @@ export function Header() {
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
-    <header className="w-full">
+    <header className="w-full sticky top-0 z-50 transition-all duration-300 shadow-sm bg-[var(--paper)]/95 backdrop-blur-md">
       <div className="announcement">
         <span>Complimentary shipping on orders over $100</span>
         <span className="hide-mobile">Easy 30-day returns · Made to last</span>
         <span>USD / EN⌄</span>
       </div>
-      <nav>
+      <nav className="transition-all duration-300">
         <Link href="/" className="wordmark">
           MODÉ<span>®</span>
         </Link>
@@ -84,6 +85,9 @@ export function Footer() {
           <Link href="/wishlist">Wishlist</Link>
           <Link href="/login">Sign in</Link>
         </div>
+      </div>
+      <div style={{ gridColumn: '1 / -1' }}>
+        <SocialLinksToggle />
       </div>
       <small>© {new Date().getFullYear()} MODÉ. All rights reserved.</small>
     </footer>

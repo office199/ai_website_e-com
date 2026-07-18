@@ -1,6 +1,7 @@
 'use client';
 
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import { ScrollTopBottomButton } from '../components/ScrollTopBottomButton';
 
 const AppContext = createContext();
 
@@ -329,6 +330,7 @@ export function AppProvider({ children }) {
     }}>
       {children}
       {toast && <div className="toast" role="status">{toast}</div>}
+      <ScrollTopBottomButton />
     </AppContext.Provider>
   );
 }
