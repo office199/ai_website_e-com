@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useApp } from '../context/AppContext';
+import Reveal from '../components/motion/Reveal';
 
 export default function AuthForm({ mode }) {
   const isSignup = mode === 'signup';
@@ -44,16 +45,16 @@ export default function AuthForm({ mode }) {
 
   return (
     <main className="auth-page">
-      <section className="auth-aside">
+      <Reveal as="section" className="auth-aside">
         <Link href="/" className="wordmark">MODÉ<span>®</span></Link>
         <div>
           <p className="eyebrow">A considered wardrobe</p>
           <h1>Made for every<br /><em>version of you.</em></h1>
           <p>Sign in to keep your bag, wishlist, and order history securely connected to your account.</p>
         </div>
-        <Link href="/" className="auth-back">← Back to shop</Link>
-      </section>
-      <section className="auth-panel">
+      <Link href="/" className="auth-back">← Back to shop</Link>
+    </Reveal>
+    <Reveal as="section" className="auth-panel">
         <div className="auth-card">
           <p className="eyebrow">{isSignup ? 'Create your account' : 'Welcome back'}</p>
           <h2>{isSignup ? 'Join MODÉ.' : 'Sign in.'}</h2>
@@ -125,7 +126,7 @@ export default function AuthForm({ mode }) {
             <Link href={isSignup ? '/login' : '/signup'}>{isSignup ? 'Sign in' : 'Create an account'}</Link>
           </p>
         </div>
-      </section>
+      </Reveal>
     </main>
   );
 }

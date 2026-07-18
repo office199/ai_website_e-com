@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useApp } from '../../context/AppContext';
 import { AdminPageHead, EmptyState, Field, Modal, PageError, Pill, RowSpinner } from '../components/AdminUI';
+import Reveal from '../../components/motion/Reveal';
 
 const formatDate = (value) => new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(new Date(value));
 const emptyForm = { name: '', role: 'customer' };
@@ -98,6 +99,7 @@ export default function AdminUsersPage() {
 
   return (
     <>
+      <Reveal>
       <AdminPageHead eyebrow="People" title="Users" description="Manage customer and administrator accounts, roles and access.">
         <button className="admin-btn ghost" onClick={load}>Refresh ↻</button>
       </AdminPageHead>
@@ -154,6 +156,7 @@ export default function AdminUsersPage() {
         )}
       </div>
 
+      </Reveal>
       <Modal open={Boolean(modal)} title="Edit user" onClose={() => setModal(null)}>
         <form onSubmit={submit} className="admin-form">
           {formError && <div className="auth-error">{formError}</div>}

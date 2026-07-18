@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useApp } from '../../context/AppContext';
 import { AdminPageHead, EmptyState, Field, Modal, PageError, RowSpinner, Stars } from '../components/AdminUI';
+import Reveal from '../../components/motion/Reveal';
 
 const formatDate = (value) => new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(new Date(value));
 const TABS = [
@@ -101,6 +102,7 @@ export default function AdminReviewsPage() {
 
   return (
     <>
+      <Reveal>
       <AdminPageHead eyebrow="Moderation" title="Product reviews" description="Approve, edit or remove reviews submitted by customers.">
         <button className="admin-btn ghost" onClick={load}>Refresh ↻</button>
       </AdminPageHead>
@@ -147,6 +149,7 @@ export default function AdminReviewsPage() {
         )}
       </div>
 
+      </Reveal>
       <Modal open={Boolean(modal)} title="Edit review" onClose={() => setModal(null)}>
         <form onSubmit={submit} className="admin-form">
           {formError && <div className="auth-error">{formError}</div>}

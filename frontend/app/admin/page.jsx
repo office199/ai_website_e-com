@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
 import { getApiUrl, useApp } from '../context/AppContext';
+import Reveal from '../components/motion/Reveal';
 
 const formatMoney = (value) => `$${Number(value || 0).toFixed(2)}`;
 const formatDate = (value) => new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(new Date(value));
@@ -45,6 +46,7 @@ export default function AdminOverviewPage() {
 
   return (
     <>
+      <Reveal>
       <header className="admin-page-head">
         <div>
           <p className="eyebrow">Store management dashboard</p>
@@ -117,6 +119,7 @@ export default function AdminOverviewPage() {
           </div>
         </>
       )}
+      </Reveal>
     </>
   );
 }

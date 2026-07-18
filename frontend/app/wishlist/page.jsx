@@ -2,6 +2,8 @@
 
 import { useApp } from '../context/AppContext';
 import { Header, Footer } from '../components/HeaderFooter';
+import Reveal from '../components/motion/Reveal';
+import { Stagger, StaggerItem } from '../components/motion/Stagger';
 import Link from 'next/link';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
@@ -38,10 +40,12 @@ export default function WishlistPage() {
       <Header />
 
       <section className="mx-auto min-h-[60vh] max-w-[1440px] px-[4vw] py-[60px]">
-        <p className="eyebrow mb-[10px]">Your Saved Pieces</p>
-        <h1 className="mb-[40px] font-display text-[42px] font-medium tracking-[-0.03em]">
-          My Wishlist
-        </h1>
+        <Reveal>
+          <p className="eyebrow mb-[10px]">Your Saved Pieces</p>
+          <h1 className="mb-[40px] font-display text-[42px] font-medium tracking-[-0.03em]">
+            My Wishlist
+          </h1>
+        </Reveal>
 
         {loading ? (
           <div className="py-[100px] text-center font-mono text-[14px]">
@@ -56,9 +60,9 @@ export default function WishlistPage() {
             </Link>
           </div>
         ) : (
-          <div className="product-grid">
+          <Stagger className="product-grid">
             {wishlist.map((product) => (
-              <article className="product" key={product.id}>
+              <StaggerItem as="article" className="product" key={product.id}>
                 <div className="product-image" style={{ backgroundImage: `url(${product.image})` }}>
                   <Link href={`/products/${product.id}`} className="product-cover-link" aria-label={`View ${product.name}`} />
                   <button
@@ -91,9 +95,9 @@ export default function WishlistPage() {
                     Move to Bag →
                   </button>
                 </div>
-              </article>
+              </StaggerItem>
             ))}
-          </div>
+          </Stagger>
         )}
       </section>
 

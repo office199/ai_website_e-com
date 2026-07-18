@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useApp } from '../../context/AppContext';
 import { AdminPageHead, EmptyState, Field, Modal, PageError, RowSpinner } from '../components/AdminUI';
+import Reveal from '../../components/motion/Reveal';
 
 const ICON_CHOICES = ['👗', '👔', '👟', '👜', '🕶️', '⌚', '🧢', '🧥', '👖', '🥻', '🎀', '💍', '🛍️', '🏷️', '🧣', '🧦'];
 const DEFAULT_ICON = '🏷️';
@@ -87,6 +88,7 @@ export default function AdminCategoriesPage() {
 
   return (
     <>
+      <Reveal>
       <AdminPageHead eyebrow="Taxonomy" title="Categories" description="Organise the catalogue with categories and subcategories. Pick an icon for each one.">
         <button className="admin-btn primary" onClick={() => openAdd()}>+ Add category</button>
       </AdminPageHead>
@@ -135,6 +137,7 @@ export default function AdminCategoriesPage() {
         )}
       </div>
 
+      </Reveal>
       <Modal open={Boolean(modal)} title={modal?.mode === 'edit' ? 'Edit category' : 'New category'} onClose={() => setModal(null)}>
         <form onSubmit={submit} className="admin-form">
           {formError && <div className="auth-error">{formError}</div>}
