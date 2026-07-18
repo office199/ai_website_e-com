@@ -156,10 +156,11 @@ html.lenis body {
     @apply [position:absolute] [bottom:23px] [left:25px] [right:25px] [display:flex] [justify-content:space-between] [color:#fff] [font:9px_'DM_Mono'] [letter-spacing:.04em];
   }
   .categories {
-    @apply [padding:80px_3.2vw] [display:grid] [grid-template-columns:1fr_1fr_1fr] [gap:17px];
+    @apply [padding:80px_3.2vw] [display:grid] [grid-template-columns:repeat(3,1fr)] [gap:17px];
   }
   .category {
-    @apply [height:465px] [color:white] [display:flex] [align-items:flex-end] [padding:28px] [background-size:cover] [background-position:center] [position:relative] [overflow:hidden];
+    @apply [color:white] [display:flex] [align-items:flex-end] [padding:28px] [background-size:cover] [background-position:center] [position:relative] [overflow:hidden] [min-height:300px];
+    aspect-ratio: 4/5;
   }
   .category:before {
     @apply [content:''] [position:absolute] [inset:0] [background:linear-gradient(transparent_35%,rgba(0,0,0,.45))];
@@ -175,6 +176,22 @@ html.lenis body {
   }
   .category p {
     @apply [font-size:11px] [margin:0];
+  }
+  @media(max-width:1024px) {
+    .category h2 {
+      @apply [font-size:40px];
+    }
+    .category p {
+      @apply [font-size:10px];
+    }
+  }
+  @media(max-width:760px) {
+    .category h2 {
+      @apply [font-size:43px];
+    }
+    .category p {
+      @apply [font-size:11px];
+    }
   }
   .cat-one {
     @apply [background-image:url('https://images.unsplash.com/photo-1496747611176-843222e1e57c?auto=format&fit=crop&w=1000&q=85')];
@@ -632,6 +649,15 @@ html.lenis body {
   .auth-loading {
     @apply [min-height:100vh] [display:grid] [place-items:center] [font:12px_'DM_Mono'];
   }
+  @media(max-width:1024px) {
+    .categories {
+      @apply [grid-template-columns:repeat(2,1fr)] [gap:14px];
+    }
+    .category {
+      @apply [min-height:280px];
+      aspect-ratio: 3/4;
+    }
+  }
   @media(max-width:800px) {
     .dash-body {
       @apply [grid-template-columns:1fr];
@@ -741,7 +767,8 @@ html.lenis body {
       @apply [padding:55px_16px] [grid-template-columns:1fr] [gap:12px];
     }
     .category {
-      @apply [height:350px];
+      @apply [min-height:320px] [padding:24px];
+      aspect-ratio: 4/5;
     }
     .category h2 {
       @apply [font-size:43px];
