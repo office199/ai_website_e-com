@@ -18,7 +18,7 @@ export function Header() {
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
-    <header style={{ width: '100%' }}>
+    <header className="w-full">
       <div className="announcement">
         <span>Complimentary shipping on orders over $100</span>
         <span className="hide-mobile">Easy 30-day returns · Made to last</span>
@@ -38,12 +38,12 @@ export function Header() {
         </div>
         <div className="actions">
           <button aria-label="Search"><Icon name="search" /></button>
-          <Link href={user ? '/wishlist' : '/login?next=/wishlist'} aria-label="Wishlist" style={{ position: 'relative', display: 'inline-block', padding: '4px' }}>
+          <Link href={user ? '/wishlist' : '/login?next=/wishlist'} aria-label="Wishlist" className="relative inline-block p-1">
             <Icon name="heart" />
             {user && wishlist.length > 0 && <i>{wishlist.length}</i>}
           </Link>
           {authLoading ? null : user ? (
-            <Link href="/account" aria-label="Account" style={{ display: 'inline-block', padding: '4px' }}><Icon name="user" /></Link>
+            <Link href="/account" aria-label="Account" className="inline-block p-1"><Icon name="user" /></Link>
           ) : (
             <Link href="/login" className="auth-nav-link">Sign in</Link>
           )}

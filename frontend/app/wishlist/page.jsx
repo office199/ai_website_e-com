@@ -37,21 +37,21 @@ export default function WishlistPage() {
     <main>
       <Header />
 
-      <section style={{ padding: '60px 4vw', minHeight: '60vh', maxWidth: '1440px', margin: '0 auto' }}>
-        <p className="eyebrow" style={{ margin: '0 0 10px' }}>Your Saved Pieces</p>
-        <h1 style={{ font: '500 42px "Playfair Display"', margin: '0 0 40px', letterSpacing: '-0.03em' }}>
+      <section className="mx-auto min-h-[60vh] max-w-[1440px] px-[4vw] py-[60px]">
+        <p className="eyebrow mb-[10px]">Your Saved Pieces</p>
+        <h1 className="mb-[40px] font-display text-[42px] font-medium tracking-[-0.03em]">
           My Wishlist
         </h1>
 
         {loading ? (
-          <div style={{ textAlign: 'center', padding: '100px 0', fontSize: '14px', fontFamily: 'DM Mono' }}>
+          <div className="py-[100px] text-center font-mono text-[14px]">
             <span>Loading saved pieces...</span>
           </div>
         ) : wishlist.length === 0 ? (
-          <div className="empty" style={{ border: '1px solid var(--line)', padding: '60px 20px', background: '#fff' }}>
-            <span style={{ fontSize: '40px' }}>♡</span>
-            <p style={{ fontSize: '15px', margin: '15px 0' }}>Save pieces you love for later.</p>
-            <Link href="/" className="button dark" style={{ display: 'inline-flex', margin: '10px auto' }}>
+          <div className="empty border border-line bg-white px-[20px] py-[60px]">
+            <span className="text-[40px]">♡</span>
+            <p className="my-[15px] text-[15px]">Save pieces you love for later.</p>
+            <Link href="/" className="button dark mx-auto my-[10px] inline-flex">
               Explore New Arrivals
             </Link>
           </div>
@@ -81,19 +81,12 @@ export default function WishlistPage() {
                   </div>
                   <strong>${product.price}</strong>
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '12px' }}>
+                <div className="mt-3 flex items-center justify-between">
                   <small>{product.color}</small>
                   <button
                     onClick={() => handleMoveToBag(product.id)}
                     disabled={product.stock < 1}
-                    style={{
-                      fontSize: '11px',
-                      textDecoration: 'underline',
-                      color: 'var(--green)',
-                      fontWeight: '500',
-                      padding: 0
-                    }}
-                    className="hide-mobile"
+                    className="hide-mobile p-0 text-[11px] font-medium text-green underline"
                   >
                     Move to Bag →
                   </button>

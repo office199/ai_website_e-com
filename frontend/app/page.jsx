@@ -25,7 +25,7 @@ function ProductGrid() {
 
   if (loading) {
     return (
-      <div style={{ textAlign: 'center', padding: '100px 0', fontSize: '14px', fontFamily: 'DM Mono' }}>
+      <div className="py-[100px] text-center font-mono text-[14px]">
         <span>Loading curated pieces...</span>
       </div>
     );
@@ -53,8 +53,8 @@ function ProductGrid() {
       </div>
       
       {filteredProducts.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: '50px 0', gridColumn: '1/-1' }}>
-          <p style={{ fontSize: '15px', color: '#74746e' }}>No pieces found in this category.</p>
+        <div className="col-span-full py-[50px] text-center">
+          <p className="text-[15px] text-[#74746e]">No pieces found in this category.</p>
         </div>
       ) : (
         <div className="product-grid">
@@ -216,7 +216,7 @@ function HomeContent() {
 export default function Home() {
   return (
     <Suspense fallback={
-      <div style={{ textAlign: 'center', padding: '100px 0', fontSize: '14px', fontFamily: 'DM Mono' }}>
+      <div className="py-[100px] text-center font-mono text-[14px]">
         <span>Loading MODÉ...</span>
       </div>
     }>
