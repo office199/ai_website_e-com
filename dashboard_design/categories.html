@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Category Management | StoreAdmin</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Geist:wght@400;600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #e2e8f0;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #cbd5e1;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-fixed-variant": "#004395",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-highest": "#e4e2e4",
+                        "on-error-container": "#93000a",
+                        "surface-container-high": "#eae7e9",
+                        "on-secondary": "#ffffff",
+                        "secondary-container": "#2170e4",
+                        "surface-bright": "#fcf8fa",
+                        "on-primary-fixed": "#131b2e",
+                        "error-container": "#ffdad6",
+                        "secondary-fixed-dim": "#adc6ff",
+                        "inverse-on-surface": "#f3f0f2",
+                        "surface-variant": "#e4e2e4",
+                        "on-primary-fixed-variant": "#3f465c",
+                        "error": "#ba1a1a",
+                        "secondary": "#0058be",
+                        "tertiary": "#000000",
+                        "surface-dim": "#dcd9db",
+                        "primary-fixed-dim": "#bec6e0",
+                        "tertiary-container": "#191c1e",
+                        "on-secondary-fixed": "#001a42",
+                        "outline": "#76777d",
+                        "primary": "#000000",
+                        "surface-container-low": "#f6f3f5",
+                        "on-error": "#ffffff",
+                        "surface-container": "#f0edef",
+                        "on-primary-container": "#7c839b",
+                        "background": "#fcf8fa",
+                        "on-background": "#1b1b1d",
+                        "primary-container": "#131b2e",
+                        "outline-variant": "#c6c6cd",
+                        "inverse-primary": "#bec6e0",
+                        "on-primary": "#ffffff",
+                        "inverse-surface": "#303032",
+                        "tertiary-fixed-dim": "#c4c7c9",
+                        "on-surface": "#1b1b1d",
+                        "on-tertiary-container": "#818486",
+                        "secondary-fixed": "#d8e2ff",
+                        "on-tertiary-fixed-variant": "#444749",
+                        "primary-fixed": "#dae2fd",
+                        "surface": "#fcf8fa",
+                        "on-surface-variant": "#45464d",
+                        "surface-tint": "#565e74"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "stack-md": "16px",
+                        "margin-mobile": "16px",
+                        "sidebar-width": "260px",
+                        "stack-sm": "8px",
+                        "container-max": "1440px",
+                        "stack-lg": "32px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Geist"],
+                        "body-sm": ["Inter"],
+                        "title-md": ["Inter"],
+                        "mono-data": ["Geist"],
+                        "body-md": ["Inter"],
+                        "display-sm": ["Geist"],
+                        "label-md": ["Geist"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-sm": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                        "title-md": ["18px", {"lineHeight": "26px", "fontWeight": "500"}],
+                        "mono-data": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "display-sm": ["30px", {"lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-x-hidden">
+<!-- Sidebar Navigation -->
+<aside class="hidden lg:flex flex-col w-sidebar-width h-full fixed left-0 top-0 bg-surface-container-low dark:bg-surface-container-lowest border-r border-outline-variant dark:border-outline z-50">
+<div class="p-6">
+<h1 class="font-headline-lg text-headline-lg font-bold text-primary dark:text-on-primary-fixed">StoreAdmin</h1>
+<p class="font-label-md text-label-md text-on-surface-variant mt-1">Management Portal</p>
+</div>
+<nav class="flex-1 px-3 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="font-label-md">Users</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-label-md">Products</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-secondary dark:text-secondary-fixed-dim font-bold border-l-4 border-secondary dark:border-secondary-fixed-dim bg-secondary-container/10 active:scale-[0.98] transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="category">category</span>
+<span class="font-label-md">Category</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="reviews">reviews</span>
+<span class="font-label-md">Review</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="confirmation_number">confirmation_number</span>
+<span class="font-label-md">Coupon</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
+<span class="font-label-md">Orders</span>
+</a>
+</nav>
+<div class="p-4 border-t border-outline-variant">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-md">Settings</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-error hover:bg-error-container/10 transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="font-label-md">Logout</span>
+</a>
+<div class="mt-4 flex items-center gap-3 px-4">
+<img class="w-8 h-8 rounded-full border border-outline-variant" data-alt="A professional headshot of a corporate administrator in a light-filled modern office, looking confident and approachable. The lighting is soft and professional, with a clean white and blue color palette that matches the design system's corporate modernism aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBc8CELJrR_lcoROQpaf2n3yH1zkBGEZAdQ2vNxhnfRdPKjKe_9EtzuEKg0Axos3paIxmGiX3EINdPksP_ICMX4pq2My9z0IA-1ip2h1mlMFvHi0HxEBTGW6TuAPBFlGRyX2uPpvjqmZB51a6fCiKAoWCfkEJk80JS6fXgxzFE2VE9O_9KYF6ieMQ8pgT0KKwjhb5wxFSB2h_7bfj4QPjxmOTZA2vLrSDH3O1B1BuVcYcA62Tjst3os"/>
+<div class="overflow-hidden">
+<p class="font-label-md text-on-surface truncate">Admin Avatar</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 left-0 right-0 lg:ml-sidebar-width h-16 flex justify-between items-center px-gutter bg-surface dark:bg-surface-dim border-b border-outline-variant dark:border-outline z-40">
+<div class="flex items-center gap-4 flex-1">
+<h2 class="font-title-md text-title-md text-primary dark:text-on-primary-fixed">Category Management</h2>
+<div class="relative w-full max-w-md ml-4 hidden md:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" data-icon="search">search</span>
+<input class="w-full bg-surface-container-low border-none rounded-full pl-10 pr-4 py-2 text-body-md focus:ring-2 ring-secondary transition-all outline-none" placeholder="Search categories..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="hover:bg-surface-container-low dark:hover:bg-surface-container-high rounded-full p-2 text-on-surface-variant transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<div class="h-8 w-[1px] bg-outline-variant mx-2"></div>
+<button class="flex items-center gap-2 hover:bg-surface-container-low rounded-lg p-1 pr-3 transition-colors">
+<img class="w-8 h-8 rounded-full object-cover" data-alt="Close up of a professional user interface profile picture icon, showing a stylized diverse professional profile on a clean circular background with soft lighting and corporate aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD05sL6b1Q5U4ekyixr3waqwajh4Dvf3oQXng98PUy-dIndrLjYFY-LzniF6b5ZjkbvILpriXlEupdG_el_u656Dh8NATaBuzi_E_X2IaEMShb4v0DjXycQR3Y3JG7ga4Z-mZrIQr9eB73TXewq2F0r--y1Z7PNwt6BPqIVtNkxuOm_ft6HZXlvxWvFzcgj6JMwkQ4JiWfe2FQoepabn7jypzEp_gAO6fid3zsV09jlhFNOEUpsmW_S"/>
+<span class="font-label-md hidden sm:inline">Admin Profile</span>
+</button>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="pt-24 lg:ml-sidebar-width min-h-screen p-gutter max-w-container-max mx-auto">
+<!-- Header Actions -->
+<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-stack-lg">
+<div>
+<h3 class="font-headline-lg text-headline-lg text-on-surface">Categories</h3>
+<p class="font-body-sm text-on-surface-variant">Organize and manage your store's product structure.</p>
+</div>
+<button class="bg-secondary text-on-secondary px-6 py-2.5 rounded-lg flex items-center gap-2 font-label-md hover:opacity-90 active:scale-95 transition-all shadow-sm">
+<span class="material-symbols-outlined" data-icon="add" style="font-variation-settings: 'FILL' 0, 'wght' 600;">add</span>
+                Add Category
+            </button>
+</div>
+<!-- Quick Stats Bento Section -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-stack-lg">
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant shadow-sm flex items-center gap-4">
+<div class="bg-secondary/10 p-3 rounded-lg text-secondary">
+<span class="material-symbols-outlined text-[32px]" data-icon="category">category</span>
+</div>
+<div>
+<p class="font-label-md text-on-surface-variant">Total Categories</p>
+<p class="font-display-sm text-display-sm text-on-surface">24</p>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant shadow-sm flex items-center gap-4">
+<div class="bg-primary-container/10 p-3 rounded-lg text-primary">
+<span class="material-symbols-outlined text-[32px]" data-icon="inventory">inventory</span>
+</div>
+<div>
+<p class="font-label-md text-on-surface-variant">Categorized Items</p>
+<p class="font-display-sm text-display-sm text-on-surface">1,284</p>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant shadow-sm flex items-center gap-4">
+<div class="bg-on-secondary-fixed-variant/10 p-3 rounded-lg text-on-secondary-fixed-variant">
+<span class="material-symbols-outlined text-[32px]" data-icon="trending_up">trending_up</span>
+</div>
+<div>
+<p class="font-label-md text-on-surface-variant">Active Status</p>
+<p class="font-display-sm text-display-sm text-on-surface">92%</p>
+</div>
+</div>
+</div>
+<!-- Data Table Container -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm">
+<!-- Table Controls -->
+<div class="p-4 border-b border-outline-variant flex flex-col md:flex-row justify-between items-center gap-4">
+<div class="flex items-center gap-2">
+<span class="font-label-md text-on-surface-variant">Showing</span>
+<select class="bg-surface-container-low border-outline-variant rounded px-2 py-1 text-body-sm focus:ring-secondary">
+<option>10</option>
+<option>25</option>
+<option>50</option>
+</select>
+<span class="font-label-md text-on-surface-variant">per page</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="flex items-center gap-1 font-label-md text-on-surface-variant px-3 py-1.5 hover:bg-surface-container-high rounded border border-outline-variant transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="filter_list">filter_list</span>
+                        Filter
+                    </button>
+<button class="flex items-center gap-1 font-label-md text-on-surface-variant px-3 py-1.5 hover:bg-surface-container-high rounded border border-outline-variant transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="download">download</span>
+                        Export
+                    </button>
+</div>
+</div>
+<!-- Scrollable Table -->
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="sticky top-0 bg-surface-container-low border-b border-outline-variant z-10">
+<tr>
+<th class="px-6 py-4 font-label-md text-on-surface-variant">
+<div class="flex items-center gap-1 cursor-pointer hover:text-primary transition-colors">
+                                    Category Name
+                                    <span class="material-symbols-outlined text-[16px]" data-icon="arrow_upward">arrow_upward</span>
+</div>
+</th>
+<th class="px-6 py-4 font-label-md text-on-surface-variant">Slug</th>
+<th class="px-6 py-4 font-label-md text-on-surface-variant text-right">Number of Products</th>
+<th class="px-6 py-4 font-label-md text-on-surface-variant">Status</th>
+<th class="px-6 py-4 font-label-md text-on-surface-variant text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded bg-surface-container-high flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="smartphone">smartphone</span>
+</div>
+<span class="font-body-md font-semibold text-on-surface">Electronics</span>
+</div>
+</td>
+<td class="px-6 py-4 font-mono-data text-on-surface-variant">electronics</td>
+<td class="px-6 py-4 text-right font-mono-data text-on-surface">452</td>
+<td class="px-6 py-4">
+<span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider">Active</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-2 text-on-surface-variant hover:text-secondary transition-colors"><span class="material-symbols-outlined" data-icon="edit">edit</span></button>
+<button class="p-2 text-on-surface-variant hover:text-error transition-colors"><span class="material-symbols-outlined" data-icon="delete">delete</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded bg-surface-container-high flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="checkroom">checkroom</span>
+</div>
+<span class="font-body-md font-semibold text-on-surface">Fashion & Apparel</span>
+</div>
+</td>
+<td class="px-6 py-4 font-mono-data text-on-surface-variant">fashion-apparel</td>
+<td class="px-6 py-4 text-right font-mono-data text-on-surface">318</td>
+<td class="px-6 py-4">
+<span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider">Active</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-2 text-on-surface-variant hover:text-secondary transition-colors"><span class="material-symbols-outlined" data-icon="edit">edit</span></button>
+<button class="p-2 text-on-surface-variant hover:text-error transition-colors"><span class="material-symbols-outlined" data-icon="delete">delete</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded bg-surface-container-high flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="chair">chair</span>
+</div>
+<span class="font-body-md font-semibold text-on-surface">Home & Kitchen</span>
+</div>
+</td>
+<td class="px-6 py-4 font-mono-data text-on-surface-variant">home-kitchen</td>
+<td class="px-6 py-4 text-right font-mono-data text-on-surface">192</td>
+<td class="px-6 py-4">
+<span class="bg-amber-100 text-amber-700 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider">Draft</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-2 text-on-surface-variant hover:text-secondary transition-colors"><span class="material-symbols-outlined" data-icon="edit">edit</span></button>
+<button class="p-2 text-on-surface-variant hover:text-error transition-colors"><span class="material-symbols-outlined" data-icon="delete">delete</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded bg-surface-container-high flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="face">face</span>
+</div>
+<span class="font-body-md font-semibold text-on-surface">Beauty & Health</span>
+</div>
+</td>
+<td class="px-6 py-4 font-mono-data text-on-surface-variant">beauty-health</td>
+<td class="px-6 py-4 text-right font-mono-data text-on-surface">124</td>
+<td class="px-6 py-4">
+<span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider">Active</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-2 text-on-surface-variant hover:text-secondary transition-colors"><span class="material-symbols-outlined" data-icon="edit">edit</span></button>
+<button class="p-2 text-on-surface-variant hover:text-error transition-colors"><span class="material-symbols-outlined" data-icon="delete">delete</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 5 -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded bg-surface-container-high flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="sports_soccer">sports_soccer</span>
+</div>
+<span class="font-body-md font-semibold text-on-surface">Sports & Outdoors</span>
+</div>
+</td>
+<td class="px-6 py-4 font-mono-data text-on-surface-variant">sports-outdoors</td>
+<td class="px-6 py-4 text-right font-mono-data text-on-surface">86</td>
+<td class="px-6 py-4">
+<span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider">Disabled</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-2 text-on-surface-variant hover:text-secondary transition-colors"><span class="material-symbols-outlined" data-icon="edit">edit</span></button>
+<button class="p-2 text-on-surface-variant hover:text-error transition-colors"><span class="material-symbols-outlined" data-icon="delete">delete</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 6 -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded bg-surface-container-high flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="toy_brick">brick</span>
+</div>
+<span class="font-body-md font-semibold text-on-surface">Toys & Games</span>
+</div>
+</td>
+<td class="px-6 py-4 font-mono-data text-on-surface-variant">toys-games</td>
+<td class="px-6 py-4 text-right font-mono-data text-on-surface">210</td>
+<td class="px-6 py-4">
+<span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider">Active</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-2 text-on-surface-variant hover:text-secondary transition-colors"><span class="material-symbols-outlined" data-icon="edit">edit</span></button>
+<button class="p-2 text-on-surface-variant hover:text-error transition-colors"><span class="material-symbols-outlined" data-icon="delete">delete</span></button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="p-6 border-t border-outline-variant flex flex-col sm:flex-row justify-between items-center gap-4">
+<span class="font-label-md text-on-surface-variant">Showing 1 to 6 of 24 entries</span>
+<div class="flex items-center gap-1">
+<button class="w-10 h-10 flex items-center justify-center rounded border border-outline-variant hover:bg-surface-container-low transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+<span class="material-symbols-outlined text-[20px]" data-icon="chevron_left">chevron_left</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center rounded bg-secondary text-on-secondary font-label-md">1</button>
+<button class="w-10 h-10 flex items-center justify-center rounded border border-outline-variant hover:bg-surface-container-low font-label-md transition-colors">2</button>
+<button class="w-10 h-10 flex items-center justify-center rounded border border-outline-variant hover:bg-surface-container-low font-label-md transition-colors">3</button>
+<button class="w-10 h-10 flex items-center justify-center rounded border border-outline-variant hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Secondary Informational Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-stack-lg">
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant">
+<div class="flex justify-between items-center mb-4">
+<h4 class="font-title-md text-on-surface">Category Distribution</h4>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="more_vert">more_vert</span>
+</div>
+<div class="h-48 flex items-center justify-center bg-surface-container-low rounded-lg relative overflow-hidden">
+<div class="absolute inset-0 opacity-10 bg-gradient-to-br from-secondary to-transparent"></div>
+<p class="text-on-surface-variant font-label-md italic">Visual distribution analytics unavailable in demo mode</p>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant">
+<div class="flex justify-between items-center mb-4">
+<h4 class="font-title-md text-on-surface">Recently Updated</h4>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="history">history</span>
+</div>
+<div class="space-y-4">
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-secondary"></div>
+<div class="flex-1">
+<p class="font-body-md text-on-surface">Electronics</p>
+<p class="font-label-md text-on-surface-variant">Modified by Admin • 2h ago</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-secondary-fixed-dim"></div>
+<div class="flex-1">
+<p class="font-body-md text-on-surface">Fashion & Apparel</p>
+<p class="font-label-md text-on-surface-variant">Modified by Admin • 5h ago</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-outline-variant"></div>
+<div class="flex-1">
+<p class="font-body-md text-on-surface">Home & Kitchen</p>
+<p class="font-label-md text-on-surface-variant">Modified by System • 1d ago</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Mobile Bottom Navigation -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-surface-container-low flex justify-around items-center border-t border-outline-variant z-50">
+<button class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="text-[10px] font-label-md">Home</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-secondary">
+<span class="material-symbols-outlined" data-icon="category" style="font-variation-settings: 'FILL' 1;">category</span>
+<span class="text-[10px] font-label-md">Categories</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="text-[10px] font-label-md">Products</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="text-[10px] font-label-md">Settings</span>
+</button>
+</nav>
+<script>
+        // Micro-interactions and UI state management
+        document.addEventListener('DOMContentLoaded', () => {
+            // Mobile search toggle (simplified)
+            const searchInput = document.querySelector('input[type="text"]');
+            searchInput?.addEventListener('focus', () => {
+                searchInput.parentElement.classList.add('ring-2', 'ring-secondary');
+            });
+            searchInput?.addEventListener('blur', () => {
+                searchInput.parentElement.classList.remove('ring-2', 'ring-secondary');
+            });
+
+            // Table row hover effect enhancements
+            const rows = document.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+                row.addEventListener('mouseenter', () => {
+                    row.style.transform = 'scale(0.998)';
+                });
+                row.addEventListener('mouseleave', () => {
+                    row.style.transform = 'scale(1)';
+                });
+            });
+        });
+    </script>
+</body></html>

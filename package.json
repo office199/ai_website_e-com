@@ -8,5 +8,8 @@
     "start": "npm run start --prefix frontend",
     "api": "npm run start --prefix backend",
     "install:all": "npm install --prefix frontend && npm install --prefix backend"
+  },
+  "dependencies": {
+    "mongodb": "^7.5.0"
   }
 }

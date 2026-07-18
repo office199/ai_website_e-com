@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Reviews Management | StoreAdmin</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Geist:wght@400;600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .star-fill {
+            font-variation-settings: 'FILL' 1;
+        }
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .no-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-fixed-variant": "#004395",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-highest": "#e4e2e4",
+                        "on-error-container": "#93000a",
+                        "surface-container-high": "#eae7e9",
+                        "on-secondary": "#ffffff",
+                        "secondary-container": "#2170e4",
+                        "surface-bright": "#fcf8fa",
+                        "on-primary-fixed": "#131b2e",
+                        "error-container": "#ffdad6",
+                        "secondary-fixed-dim": "#adc6ff",
+                        "inverse-on-surface": "#f3f0f2",
+                        "surface-variant": "#e4e2e4",
+                        "on-primary-fixed-variant": "#3f465c",
+                        "error": "#ba1a1a",
+                        "secondary": "#0058be",
+                        "tertiary": "#000000",
+                        "surface-dim": "#dcd9db",
+                        "primary-fixed-dim": "#bec6e0",
+                        "tertiary-container": "#191c1e",
+                        "on-secondary-fixed": "#001a42",
+                        "outline": "#76777d",
+                        "primary": "#000000",
+                        "surface-container-low": "#f6f3f5",
+                        "on-error": "#ffffff",
+                        "surface-container": "#f0edef",
+                        "on-primary-container": "#7c839b",
+                        "background": "#fcf8fa",
+                        "on-secondary-container": "#fefcff",
+                        "on-tertiary-fixed": "#191c1e",
+                        "tertiary-fixed": "#e0e3e5",
+                        "on-background": "#1b1b1d",
+                        "primary-container": "#131b2e",
+                        "outline-variant": "#c6c6cd",
+                        "inverse-primary": "#bec6e0",
+                        "on-primary": "#ffffff",
+                        "inverse-surface": "#303032",
+                        "tertiary-fixed-dim": "#c4c7c9",
+                        "on-surface": "#1b1b1d",
+                        "on-tertiary-container": "#818486",
+                        "secondary-fixed": "#d8e2ff",
+                        "on-tertiary-fixed-variant": "#444749",
+                        "primary-fixed": "#dae2fd",
+                        "surface": "#fcf8fa",
+                        "on-surface-variant": "#45464d",
+                        "surface-tint": "#565e74"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "stack-md": "16px",
+                        "margin-mobile": "16px",
+                        "sidebar-width": "260px",
+                        "stack-sm": "8px",
+                        "container-max": "1440px",
+                        "stack-lg": "32px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Geist"],
+                        "body-sm": ["Inter"],
+                        "title-md": ["Inter"],
+                        "mono-data": ["Geist"],
+                        "body-md": ["Inter"],
+                        "display-sm": ["Geist"],
+                        "headline-lg": ["Geist"],
+                        "label-md": ["Geist"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "body-sm": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                        "title-md": ["18px", {"lineHeight": "26px", "fontWeight": "500"}],
+                        "mono-data": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "display-sm": ["30px", {"lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen">
+<!-- Sidebar Navigation -->
+<aside class="hidden lg:flex flex-col w-sidebar-width h-full fixed left-0 top-0 bg-surface-container-low dark:bg-surface-container-lowest border-r border-outline-variant dark:border-outline z-50">
+<div class="p-6">
+<h1 class="font-headline-lg text-headline-lg font-bold text-primary dark:text-on-primary-fixed">StoreAdmin</h1>
+<p class="font-label-md text-label-md text-on-surface-variant opacity-70">Management Portal</p>
+</div>
+<nav class="flex-1 px-3 space-y-1 overflow-y-auto no-scrollbar">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition-colors rounded-lg group" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition-colors rounded-lg group" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="font-label-md text-label-md">Users</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition-colors rounded-lg group" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-label-md text-label-md">Products</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition-colors rounded-lg group" href="#">
+<span class="material-symbols-outlined" data-icon="category">category</span>
+<span class="font-label-md text-label-md">Category</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-secondary dark:text-secondary-fixed-dim font-bold border-l-4 border-secondary dark:border-secondary-fixed-dim bg-secondary-container/10 active:scale-[0.98] transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="reviews">reviews</span>
+<span class="font-label-md text-label-md">Review</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition-colors rounded-lg group" href="#">
+<span class="material-symbols-outlined" data-icon="confirmation_number">confirmation_number</span>
+<span class="font-label-md text-label-md">Coupon</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition-colors rounded-lg group" href="#">
+<span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
+<span class="font-label-md text-label-md">Orders</span>
+</a>
+</nav>
+<div class="p-4 mt-auto border-t border-outline-variant">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-error hover:bg-error-container/10 transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="font-label-md text-label-md">Logout</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Wrapper -->
+<div class="lg:ml-sidebar-width flex flex-col min-h-screen">
+<!-- Top Navigation -->
+<header class="flex justify-between items-center w-full px-gutter h-16 bg-surface dark:bg-surface-dim border-b border-outline-variant dark:border-outline sticky top-0 z-40">
+<div class="flex items-center gap-4">
+<button class="lg:hidden p-2 hover:bg-surface-container-low rounded-full">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+<div class="flex items-center gap-2 px-3 py-1.5 bg-surface-container-low rounded-full w-64 lg:w-96">
+<span class="material-symbols-outlined text-on-surface-variant text-sm" data-icon="search">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-sm w-full" placeholder="Search reviews..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="hover:bg-surface-container-low rounded-full p-2 relative group transition-all focus:ring-2 ring-secondary">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="notifications">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full border-2 border-surface"></span>
+</button>
+<div class="h-8 w-8 rounded-full bg-secondary-fixed overflow-hidden flex items-center justify-center">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a female administrative manager in a corporate office setting, wearing professional attire. The lighting is soft and natural, emphasizing a trustworthy and efficient personality, following the brand's data-driven and modern corporate aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAIHtoBLe-kBSOmkuNFUtpAP78LeGSkonJpvsud4KrAoU8Xo06Eyrhg1viz8K1PA2b8ya8DlVy2VocpBWqG_fpJY5aPxAf2OCPRwppBulD7vWY5BizizSRnBfPHvXJfzQbBsbla8RXOMYUtoAQM-UZT3KtMSyBnWo5WKPZH72pRXtx5mOnJwWFzeReBFMzKS3QNDAbfGgAa6N3tM_9TnynT41eFdVUNydyt5FBSBJUz9bSjbSlTe59k"/>
+</div>
+</div>
+</header>
+<!-- Main Workspace -->
+<main class="flex-1 p-gutter max-w-container-max mx-auto w-full">
+<!-- Page Header & Stats -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-stack-lg">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-primary">Reviews Management</h2>
+<p class="text-on-surface-variant font-body-md mt-1">Manage and moderate customer feedback across your product catalog.</p>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+<div class="bg-surface-container-lowest border border-outline-variant p-4 rounded-xl shadow-sm">
+<span class="text-label-md text-on-surface-variant uppercase tracking-wider block mb-1">Avg. Rating</span>
+<div class="flex items-center gap-2">
+<span class="font-headline-lg text-headline-lg">4.8</span>
+<div class="flex text-secondary">
+<span class="material-symbols-outlined text-sm star-fill" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm star-fill" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm star-fill" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm star-fill" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" data-icon="star_half">star_half</span>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant p-4 rounded-xl shadow-sm">
+<span class="text-label-md text-on-surface-variant uppercase tracking-wider block mb-1">Pending Approval</span>
+<div class="flex items-center gap-2">
+<span class="font-headline-lg text-headline-lg">12</span>
+<span class="px-2 py-0.5 bg-error-container text-on-error-container rounded text-xs font-bold">Priority</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Bento Filter & Actions -->
+<div class="flex flex-wrap gap-4 mb-stack-md">
+<button class="px-4 py-2 bg-secondary text-on-secondary rounded-lg font-label-md flex items-center gap-2 shadow-sm hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-sm" data-icon="filter_list">filter_list</span>
+                    All Reviews
+                </button>
+<button class="px-4 py-2 bg-surface-container-lowest border border-outline-variant text-on-surface-variant rounded-lg font-label-md hover:bg-surface-container-low transition-colors">
+                    Approved
+                </button>
+<button class="px-4 py-2 bg-surface-container-lowest border border-outline-variant text-on-surface-variant rounded-lg font-label-md hover:bg-surface-container-low transition-colors">
+                    Pending
+                </button>
+<div class="ml-auto flex gap-2">
+<button class="p-2 border border-outline-variant rounded-lg hover:bg-surface-container-low text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="download">download</span>
+</button>
+<button class="p-2 border border-outline-variant rounded-lg hover:bg-surface-container-low text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="refresh">refresh</span>
+</button>
+</div>
+</div>
+<!-- Data Table Container -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low border-b border-outline-variant">
+<th class="px-6 py-4 font-label-md text-on-surface-variant uppercase tracking-wider">Product</th>
+<th class="px-6 py-4 font-label-md text-on-surface-variant uppercase tracking-wider">Customer</th>
+<th class="px-6 py-4 font-label-md text-on-surface-variant uppercase tracking-wider text-center">Rating</th>
+<th class="px-6 py-4 font-label-md text-on-surface-variant uppercase tracking-wider">Comment</th>
+<th class="px-6 py-4 font-label-md text-on-surface-variant uppercase tracking-wider">Date</th>
+<th class="px-6 py-4 font-label-md text-on-surface-variant uppercase tracking-wider">Status</th>
+<th class="px-6 py-4 font-label-md text-on-surface-variant uppercase tracking-wider text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container shadow-inner flex-shrink-0">
+<img class="w-full h-full object-cover rounded-lg" data-alt="A clean product shot of a minimalist ergonomic office chair in light grey, photographed in a high-key studio with soft lighting, reflecting professional and modern corporate aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBzQ2kGKp3PlHj1D83C0b_QNIT6_KVBXINwmSqh3i0eTrDV7yu8X7HaHu1yW_0YCILVqyPL-yu0e3yXLMGQfo9SrsQPChrcabj8y3gllowVIKykTwmk_0YJm54Vr73YqkjJRiWdvJEUbVIwH5lh5dtun560Zj3T-DMER2To9rrUoUPJ4ovGfT5fCOe2Ldr4ZNAilOfHQ7tebc1TjRcApbXwxkockNuNtydBG61cTpQvdWUvdQd54_TP"/>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md font-bold text-primary">ErgoPro Chair</span>
+<span class="text-xs text-on-surface-variant">Furniture</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex flex-col">
+<span class="text-body-md font-medium">Alex Rivera</span>
+<span class="text-xs text-on-surface-variant">alex.r@example.com</span>
+</div>
+</td>
+<td class="px-6 py-4 text-center">
+<div class="flex justify-center text-secondary">
+<span class="material-symbols-outlined text-sm star-fill" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm star-fill" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm star-fill" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm star-fill" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm star-fill" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<p class="text-body-sm text-on-surface-variant max-w-xs line-clamp-2">The most comfortable chair I've used for my home office. Set up was a breeze and the lumbar support is incredible.</p>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="text-body-sm text-on-surface-variant font-mono-data">Oct 24, 2023</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="px-2 py-1 bg-secondary-container/10 text-secondary rounded-full text-xs font-bold border border-secondary/20">Approved</span>
+</td>
+<td class="px-6 py-4 text-right whitespace-nowrap">
+<div class="flex justify-end gap-2">
+<button class="p-1.5 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="visibility">visibility</span>
+</button>
+<button class="p-1.5 text-error hover:bg-error-container/10 rounded transition-colors">
+<span class="material-symbols-outlined" data-icon="delete">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container shadow-inner flex-shrink-0">
+<img class="w-full h-full object-cover rounded-lg" data-alt="A sleek, black titanium mechanical watch with a sapphire crystal face, captured in a high-contrast cinematic lighting setup, highlighting the intricate details and professional craftsmanship." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZ6kzgYzAr6xLeyZXqyOx82fOpiGOptTJphGyBstAgAiY4HsSzGrbmbfQOwsr1kqeV2_SCMLz7DoQZ6NfFOWOWtPzMkEByxvHB3dE9d5Qp1c1J_6Qd9yKSaJH-wSLL3m9Nx7dV1JIXh79C9lwE037Ey6OsiRkh8rFnYzuKcvjiBOjGm4wsi_0FPzlRYWuBtKUK5Kke1VdMDerePSfS0g2cV2fQ8RQDYt-2CylsI40IHvHBJF_j-3O4"/>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md font-bold text-primary">Titan Chrono</span>
+<span class="text-xs text-on-surface-variant">Accessories</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex flex-col">
+<span class="text-body-md font-medium">Jordan Smith</span>
+<span class="text-xs text-on-surface-variant">j.smith@cloud.com</span>
+</div>
+</td>
+<td class="px-6 py-4 text-center">
+<div class="flex justify-center text-secondary">
+<span class="material-symbols-outlined text-sm star-fill" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm star-fill" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm star-fill" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" data-icon="star">star</span>
+<span class="material-symbols-outlined text-sm" data-icon="star">star</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<p class="text-body-sm text-on-surface-variant max-w-xs line-clamp-2">Good build quality but the strap is a bit stiff for my liking. Hope it softens over time.</p>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="text-body-sm text-on-surface-variant font-mono-data">Oct 23, 2023</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="px-2 py-1 bg-surface-container-high text-on-surface-variant rounded-full text-xs font-bold border border-outline-variant">Pending</span>
+</td>
+<td class="px-6 py-4 text-right whitespace-nowrap">
+<div class="flex justify-end gap-2">
+<button class="px-3 py-1 bg-secondary text-on-secondary rounded text-xs font-bold hover:opacity-90">Approve</button>
+<button class="p-1.5 text-error hover:bg-error-container/10 rounded transition-colors">
+<span class="material-symbols-outlined" data-icon="delete">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container shadow-inner flex-shrink-0">
+<img class="w-full h-full object-cover rounded-lg" data-alt="High-end noise-canceling headphones in matte midnight blue, presented on a minimalist wooden stand against a clean, professional studio backdrop with soft gradient lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDVsvFhfRTr0YSBDHXhu6roaL99IpvAsEFvKkbJJKH591u9j7UQ7M2UXbjRCG6-Jqn4Mi9sV2j8vQWuDX-JWxhefGcWvB_7uAvNgFiPzjagnNFlOC9ApK698wyf7h5lmykFvC7Vuf4MGRZ1VUlvaVwYxY8Vshq74DxdRUx-du65senSPU8P5N1blrk3lm3k2A6_gNGzYKhefWzmPt-7BIhg56scSpouxxI85pgLsA3axalGCHikOTtW"/>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md font-bold text-primary">SonicBuds G2</span>
+<span class="text-xs text-on-surface-variant">Electronics</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex flex-col">
+<span class="text-body-md font-medium">Sarah Chen</span>
+<span class="text-xs text-on-surface-variant">sarah.chen@tech.io</span>
+</div>
+</td>
+<td class="px-6 py-4 text-center">
+<div class="flex justify-center text-secondary">
+<span class="material-symbols-outlined text-sm star-fill" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm star-fill" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm star-fill" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm star-fill" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" data-icon="star_half">star_half</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<p class="text-body-sm text-on-surface-variant max-w-xs line-clamp-2">ANC is top notch. I take these on all my business trips now. Battery life actually matches the specs.</p>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="text-body-sm text-on-surface-variant font-mono-data">Oct 22, 2023</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="px-2 py-1 bg-secondary-container/10 text-secondary rounded-full text-xs font-bold border border-secondary/20">Approved</span>
+</td>
+<td class="px-6 py-4 text-right whitespace-nowrap">
+<div class="flex justify-end gap-2">
+<button class="p-1.5 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="visibility">visibility</span>
+</button>
+<button class="p-1.5 text-error hover:bg-error-container/10 rounded transition-colors">
+<span class="material-symbols-outlined" data-icon="delete">delete</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="px-6 py-4 bg-surface-container-low flex items-center justify-between">
+<span class="text-body-sm text-on-surface-variant">Showing 1-10 of 254 reviews</span>
+<div class="flex gap-1">
+<button class="p-2 border border-outline-variant rounded-lg hover:bg-surface hover:shadow-sm disabled:opacity-50 transition-all">
+<span class="material-symbols-outlined text-sm" data-icon="chevron_left">chevron_left</span>
+</button>
+<button class="px-3.5 py-1 bg-secondary text-on-secondary rounded-lg font-bold text-sm shadow-sm">1</button>
+<button class="px-3.5 py-1 text-on-surface-variant hover:bg-surface rounded-lg text-sm transition-colors">2</button>
+<button class="px-3.5 py-1 text-on-surface-variant hover:bg-surface rounded-lg text-sm transition-colors">3</button>
+<span class="px-2 py-1 text-on-surface-variant">...</span>
+<button class="px-3.5 py-1 text-on-surface-variant hover:bg-surface rounded-lg text-sm transition-colors">26</button>
+<button class="p-2 border border-outline-variant rounded-lg hover:bg-surface hover:shadow-sm transition-all">
+<span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Contextual Insight Area (Bento Grid Style) -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter mt-stack-lg">
+<div class="lg:col-span-2 bg-surface-container-low p-6 rounded-xl border border-outline-variant relative overflow-hidden">
+<div class="relative z-10">
+<h3 class="font-title-md text-title-md text-primary mb-2">Review Sentiment Analysis</h3>
+<p class="text-body-sm text-on-surface-variant mb-6">AI-driven analysis of the latest 100 customer comments.</p>
+<div class="space-y-4">
+<div>
+<div class="flex justify-between mb-1.5">
+<span class="text-xs font-bold text-on-surface">Positive (82%)</span>
+</div>
+<div class="w-full bg-surface-container-highest h-2 rounded-full overflow-hidden">
+<div class="bg-secondary h-full" style="width: 82%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between mb-1.5">
+<span class="text-xs font-bold text-on-surface">Neutral (12%)</span>
+</div>
+<div class="w-full bg-surface-container-highest h-2 rounded-full overflow-hidden">
+<div class="bg-outline h-full" style="width: 12%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between mb-1.5">
+<span class="text-xs font-bold text-on-surface">Negative (6%)</span>
+</div>
+<div class="w-full bg-surface-container-highest h-2 rounded-full overflow-hidden">
+<div class="bg-error h-full" style="width: 6%"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Decorative Graphic element -->
+<div class="absolute -bottom-10 -right-10 opacity-10">
+<span class="material-symbols-outlined text-[120px]" data-icon="monitoring">monitoring</span>
+</div>
+</div>
+<div class="bg-primary text-on-primary p-6 rounded-xl flex flex-col justify-between shadow-lg relative group overflow-hidden">
+<div>
+<h3 class="font-title-md text-title-md mb-2">Moderation Queue</h3>
+<p class="text-on-primary/70 text-body-sm">You have 12 pending reviews that need attention today.</p>
+</div>
+<button class="mt-6 px-4 py-2 bg-surface text-primary rounded-lg font-bold text-sm w-full transition-transform active:scale-95">
+                        Process Queue
+                    </button>
+<!-- Background Subtle Pattern -->
+<div class="absolute top-0 right-0 p-4 opacity-20 transform -rotate-12 group-hover:rotate-0 transition-transform duration-500">
+<span class="material-symbols-outlined text-6xl" data-icon="verified_user">verified_user</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="mt-auto px-gutter py-6 text-center border-t border-outline-variant bg-surface-container-low">
+<p class="text-xs text-on-surface-variant">© 2024 StoreAdmin Management Portal. All rights reserved.</p>
+</footer>
+</div>
+<!-- Mobile Bottom Navigation -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full bg-surface border-t border-outline-variant flex justify-around items-center h-16 z-50">
+<button class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="text-[10px] font-bold">Home</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="text-[10px] font-bold">Products</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-secondary">
+<span class="material-symbols-outlined" data-icon="reviews" style="font-variation-settings: 'FILL' 1;">reviews</span>
+<span class="text-[10px] font-bold">Reviews</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="text-[10px] font-bold">Settings</span>
+</button>
+</nav>
+<script>
+        // Micro-interaction for approve button
+        document.querySelectorAll('button:contains("Approve")').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const row = this.closest('tr');
+                row.style.opacity = '0.5';
+                row.style.pointerEvents = 'none';
+                setTimeout(() => {
+                    const statusBadge = row.querySelector('.bg-surface-container-high');
+                    if(statusBadge) {
+                        statusBadge.className = 'px-2 py-1 bg-secondary-container/10 text-secondary rounded-full text-xs font-bold border border-secondary/20';
+                        statusBadge.textContent = 'Approved';
+                        this.outerHTML = `
+                            <button class="p-1.5 text-on-surface-variant hover:text-primary transition-colors">
+                                <span class="material-symbols-outlined" data-icon="visibility">visibility</span>
+                            </button>
+                        `;
+                    }
+                    row.style.opacity = '1';
+                    row.style.pointerEvents = 'auto';
+                }, 600);
+            });
+        });
+
+        // Add contains selector for Vanilla JS
+        window.NodeList.prototype.forEach = Array.prototype.forEach;
+        function contains(selector, text) {
+            var elements = document.querySelectorAll(selector);
+            return Array.from(elements).filter(function(element){
+                return RegExp(text).test(element.textContent);
+            });
+        }
+    </script>
+</body></html>

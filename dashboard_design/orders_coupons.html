@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>StoreAdmin - Coupons & Orders</title>
+<!-- Fonts & Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Geist:wght@400;600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-tab-indicator {
+            position: absolute;
+            left: 0;
+            width: 3px;
+            height: 100%;
+            background-color: currentColor;
+        }
+        /* Custom scrollbar for data-heavy views */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #cbd5e1; }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-lowest": "#ffffff",
+                    "on-secondary-fixed-variant": "#004395",
+                    "on-tertiary": "#ffffff",
+                    "surface-container-highest": "#e4e2e4",
+                    "on-error-container": "#93000a",
+                    "surface-container-high": "#eae7e9",
+                    "on-secondary": "#ffffff",
+                    "secondary-container": "#2170e4",
+                    "surface-bright": "#fcf8fa",
+                    "on-primary-fixed": "#131b2e",
+                    "error-container": "#ffdad6",
+                    "secondary-fixed-dim": "#adc6ff",
+                    "inverse-on-surface": "#f3f0f2",
+                    "surface-variant": "#e4e2e4",
+                    "on-primary-fixed-variant": "#3f465c",
+                    "error": "#ba1a1a",
+                    "secondary": "#0058be",
+                    "tertiary": "#000000",
+                    "surface-dim": "#dcd9db",
+                    "primary-fixed-dim": "#bec6e0",
+                    "tertiary-container": "#191c1e",
+                    "on-secondary-fixed": "#001a42",
+                    "outline": "#76777d",
+                    "primary": "#000000",
+                    "surface-container-low": "#f6f3f5",
+                    "on-error": "#ffffff",
+                    "surface-container": "#f0edef",
+                    "on-primary-container": "#7c839b",
+                    "background": "#fcf8fa",
+                    "on-secondary-container": "#fefcff",
+                    "on-tertiary-fixed": "#191c1e",
+                    "tertiary-fixed": "#e0e3e5",
+                    "on-background": "#1b1b1d",
+                    "primary-container": "#131b2e",
+                    "outline-variant": "#c6c6cd",
+                    "inverse-primary": "#bec6e0",
+                    "on-primary": "#ffffff",
+                    "inverse-surface": "#303032",
+                    "tertiary-fixed-dim": "#c4c7c9",
+                    "on-surface": "#1b1b1d",
+                    "on-tertiary-container": "#818486",
+                    "secondary-fixed": "#d8e2ff",
+                    "on-tertiary-fixed-variant": "#444749",
+                    "primary-fixed": "#dae2fd",
+                    "surface": "#fcf8fa",
+                    "on-surface-variant": "#45464d",
+                    "surface-tint": "#565e74"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "gutter": "24px",
+                    "stack-md": "16px",
+                    "margin-mobile": "16px",
+                    "sidebar-width": "260px",
+                    "stack-sm": "8px",
+                    "container-max": "1440px",
+                    "stack-lg": "32px"
+            },
+            "fontFamily": {
+                    "headline-lg-mobile": ["Geist"],
+                    "body-sm": ["Inter"],
+                    "title-md": ["Inter"],
+                    "mono-data": ["Geist"],
+                    "body-md": ["Inter"],
+                    "display-sm": ["Geist"],
+                    "headline-lg": ["Geist"],
+                    "label-md": ["Geist"]
+            },
+            "fontSize": {
+                    "headline-lg-mobile": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "body-sm": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                    "title-md": ["18px", {"lineHeight": "26px", "fontWeight": "500"}],
+                    "mono-data": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "display-sm": ["30px", {"lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md text-body-md overflow-x-hidden">
+<!-- Sidebar (SideNavBar) -->
+<aside class="fixed left-0 top-0 h-full w-sidebar-width hidden lg:flex flex-col bg-surface-container-low dark:bg-surface-container-lowest border-r border-outline-variant dark:border-outline z-50" id="side-nav">
+<div class="p-gutter">
+<h1 class="font-headline-lg text-headline-lg font-bold text-primary dark:text-on-primary-fixed">StoreAdmin</h1>
+<p class="font-label-md text-label-md text-on-surface-variant opacity-70">Management Portal</p>
+</div>
+<nav class="flex-1 overflow-y-auto px-4 space-y-1">
+<!-- Navigation items from JSON logic -->
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="font-label-md text-label-md">Users</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-label-md text-label-md">Products</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="category">category</span>
+<span class="font-label-md text-label-md">Category</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="reviews">reviews</span>
+<span class="font-label-md text-label-md">Review</span>
+</a>
+<!-- Active State: Coupons/Orders (Heuristic Choice) -->
+<a class="flex items-center gap-3 px-4 py-3 text-secondary dark:text-secondary-fixed-dim font-bold border-l-4 border-secondary dark:border-secondary-fixed-dim bg-secondary-container/10 scale-[0.98] transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="confirmation_number">confirmation_number</span>
+<span class="font-label-md text-label-md">Coupon</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
+<span class="font-label-md text-label-md">Orders</span>
+</a>
+</nav>
+<div class="mt-auto border-t border-outline-variant p-4 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="font-label-md text-label-md">Logout</span>
+</a>
+</div>
+</aside>
+<!-- Top Navigation (TopNavBar) -->
+<header class="fixed top-0 right-0 lg:left-sidebar-width left-0 h-16 flex justify-between items-center px-gutter bg-surface dark:bg-surface-dim border-b border-outline-variant dark:border-outline z-40 transition-all duration-300">
+<div class="flex items-center gap-4 flex-1">
+<button class="lg:hidden p-2 text-on-surface-variant">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<div class="relative w-full max-w-md hidden sm:block">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-on-surface-variant text-sm">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-container-low border-none rounded-full text-body-md focus:ring-2 focus:ring-secondary" placeholder="Search orders, coupons..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-2 lg:gap-4">
+<button class="hover:bg-surface-container-low rounded-full p-2 text-on-surface-variant relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full border border-surface"></span>
+</button>
+<div class="h-8 w-[1px] bg-outline-variant mx-1"></div>
+<div class="flex items-center gap-3 cursor-pointer">
+<div class="text-right hidden sm:block">
+<p class="font-label-md text-label-md text-on-surface font-bold">Admin User</p>
+<p class="text-[10px] text-on-surface-variant">Store Manager</p>
+</div>
+<img class="w-10 h-10 rounded-full border border-outline-variant object-cover" data-alt="A clean, professional headshot of a diverse corporate administrator with neutral studio lighting, wearing a minimalist dark blazer against a soft grey background. The image has a sharp, high-end editorial feel with high contrast and deep blacks, matching a light-mode modern UI aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDB-_KMUJ8HV4-GPx8E-Twm24fFOLRZ8iCJefqvNf0EBU2EWs8lFb6OBPcPhPKP2ijEkrh2kf7XOLanRZF3Uh-UvBSZGJJLCC49zKGSRr5lpwTJQuVZMEK-0_VQadkaa_k0rgpXhrzC9ZAgfoVjQ9OOgpzmbGOHWrjKF6gyE7oOi9u-VxU7T3AyU8CrBDmYVoexmrOeRDTkYfdWaSPxnwfbrJ15tVo2foVFfoBq_WnSKIkWJi6q9-nZ"/>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="pt-24 pb-gutter px-gutter lg:ml-sidebar-width min-h-screen">
+<div class="max-w-container-max mx-auto space-y-stack-lg">
+<!-- Page Header with Switcher -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-stack-md">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-primary tracking-tight">Orders & Promotions</h2>
+<p class="text-on-surface-variant mt-1">Manage global orders and promotional campaigns from a single interface.</p>
+</div>
+<div class="inline-flex p-1 bg-surface-container-high rounded-lg h-12">
+<button class="px-6 py-2 rounded-md font-label-md text-label-md transition-all bg-surface-container-lowest text-primary shadow-sm" id="tab-orders" onclick="switchTab('orders')">
+                        Orders
+                    </button>
+<button class="px-6 py-2 rounded-md font-label-md text-label-md transition-all text-on-surface-variant hover:text-primary" id="tab-coupons" onclick="switchTab('coupons')">
+                        Coupons
+                    </button>
+</div>
+</div>
+<!-- Stats Overview - Bento Grid Style -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter">
+<div class="p-stack-md bg-surface-container-lowest border border-outline-variant rounded-xl flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-secondary-container/10 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined">shopping_bag</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface-variant uppercase">Total Orders</p>
+<h4 class="font-headline-lg text-headline-lg">1,284</h4>
+</div>
+</div>
+<div class="p-stack-md bg-surface-container-lowest border border-outline-variant rounded-xl flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-secondary-container/10 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined">payments</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface-variant uppercase">Revenue</p>
+<h4 class="font-headline-lg text-headline-lg">$42,920</h4>
+</div>
+</div>
+<div class="p-stack-md bg-surface-container-lowest border border-outline-variant rounded-xl flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-secondary-container/10 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined">confirmation_number</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface-variant uppercase">Active Coupons</p>
+<h4 class="font-headline-lg text-headline-lg">12</h4>
+</div>
+</div>
+<div class="p-stack-md bg-surface-container-lowest border border-outline-variant rounded-xl flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-secondary-container/10 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined">trending_up</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface-variant uppercase">Avg. Value</p>
+<h4 class="font-headline-lg text-headline-lg">$134.00</h4>
+</div>
+</div>
+</div>
+<!-- Main Data Views -->
+<div class="relative min-h-[500px]">
+<!-- Orders View -->
+<section class="space-y-gutter transition-all duration-500 opacity-100 transform translate-y-0" id="view-orders">
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden">
+<div class="p-4 border-b border-outline-variant flex justify-between items-center bg-surface-container-low/30">
+<h3 class="font-title-md text-title-md font-bold">Recent Orders</h3>
+<div class="flex gap-2">
+<button class="flex items-center gap-2 px-3 py-1.5 border border-outline-variant rounded bg-white text-body-sm hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-sm">filter_list</span> Filter
+                                </button>
+<button class="flex items-center gap-2 px-3 py-1.5 border border-outline-variant rounded bg-white text-body-sm hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-sm">download</span> Export
+                                </button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low text-on-surface-variant font-label-md text-label-md border-b border-outline-variant">
+<th class="px-gutter py-4 font-bold">Order ID</th>
+<th class="px-gutter py-4 font-bold">Date</th>
+<th class="px-gutter py-4 font-bold">Customer Name</th>
+<th class="px-gutter py-4 font-bold">Payment Method</th>
+<th class="px-gutter py-4 font-bold">Total Amount</th>
+<th class="px-gutter py-4 font-bold text-center">Order Status</th>
+<th class="px-gutter py-4 font-bold text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-gutter py-4 font-mono-data text-mono-data">#ORD-90210</td>
+<td class="px-gutter py-4 text-on-surface-variant">Oct 24, 2023</td>
+<td class="px-gutter py-4 font-medium">Alexandria Bennett</td>
+<td class="px-gutter py-4 text-on-surface-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">credit_card</span> Visa Ending 4412
+                                        </td>
+<td class="px-gutter py-4 font-mono-data text-mono-data font-bold">$245.00</td>
+<td class="px-gutter py-4 text-center">
+<span class="px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-blue-100 text-blue-700">Shipped</span>
+</td>
+<td class="px-gutter py-4 text-right">
+<button class="p-1 hover:bg-secondary-container/20 rounded-full text-secondary opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-gutter py-4 font-mono-data text-mono-data">#ORD-90211</td>
+<td class="px-gutter py-4 text-on-surface-variant">Oct 24, 2023</td>
+<td class="px-gutter py-4 font-medium">Marcus Sterling</td>
+<td class="px-gutter py-4 text-on-surface-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">account_balance_wallet</span> PayPal
+                                        </td>
+<td class="px-gutter py-4 font-mono-data text-mono-data font-bold">$112.50</td>
+<td class="px-gutter py-4 text-center">
+<span class="px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-yellow-100 text-yellow-700">Processing</span>
+</td>
+<td class="px-gutter py-4 text-right">
+<button class="p-1 hover:bg-secondary-container/20 rounded-full text-secondary opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-gutter py-4 font-mono-data text-mono-data">#ORD-90212</td>
+<td class="px-gutter py-4 text-on-surface-variant">Oct 23, 2023</td>
+<td class="px-gutter py-4 font-medium">Elena Rodriguez</td>
+<td class="px-gutter py-4 text-on-surface-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">credit_card</span> Mastercard
+                                        </td>
+<td class="px-gutter py-4 font-mono-data text-mono-data font-bold">$1,023.00</td>
+<td class="px-gutter py-4 text-center">
+<span class="px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-green-100 text-green-700">Delivered</span>
+</td>
+<td class="px-gutter py-4 text-right">
+<button class="p-1 hover:bg-secondary-container/20 rounded-full text-secondary opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-gutter py-4 font-mono-data text-mono-data">#ORD-90213</td>
+<td class="px-gutter py-4 text-on-surface-variant">Oct 22, 2023</td>
+<td class="px-gutter py-4 font-medium">Jameson Clarke</td>
+<td class="px-gutter py-4 text-on-surface-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">credit_card</span> Apple Pay
+                                        </td>
+<td class="px-gutter py-4 font-mono-data text-mono-data font-bold">$56.00</td>
+<td class="px-gutter py-4 text-center">
+<span class="px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-green-100 text-green-700">Delivered</span>
+</td>
+<td class="px-gutter py-4 text-right">
+<button class="p-1 hover:bg-secondary-container/20 rounded-full text-secondary opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-4 border-t border-outline-variant flex justify-between items-center text-on-surface-variant text-body-sm">
+<span>Showing 4 of 1,284 results</span>
+<div class="flex gap-2">
+<button class="px-3 py-1 border border-outline-variant rounded disabled:opacity-50" disabled="">Previous</button>
+<button class="px-3 py-1 border border-outline-variant rounded hover:bg-surface-container-low">Next</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Coupons View (Hidden by default) -->
+<section class="hidden absolute top-0 left-0 w-full space-y-gutter transition-all duration-500 opacity-0 transform translate-y-4" id="view-coupons">
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden">
+<div class="p-4 border-b border-outline-variant flex justify-between items-center bg-surface-container-low/30">
+<h3 class="font-title-md text-title-md font-bold">Active Promotional Coupons</h3>
+<button class="flex items-center gap-2 px-4 py-2 bg-secondary text-white rounded-lg font-label-md text-label-md hover:brightness-110 transition-all shadow-md">
+<span class="material-symbols-outlined text-sm">add</span> Create Coupon
+                            </button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low text-on-surface-variant font-label-md text-label-md border-b border-outline-variant">
+<th class="px-gutter py-4 font-bold">Coupon Code</th>
+<th class="px-gutter py-4 font-bold">Discount Type</th>
+<th class="px-gutter py-4 font-bold">Usage Limit</th>
+<th class="px-gutter py-4 font-bold">Expiry Date</th>
+<th class="px-gutter py-4 font-bold text-center">Status</th>
+<th class="px-gutter py-4 font-bold text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="px-gutter py-4">
+<span class="px-2 py-1 bg-surface-container-high rounded font-mono-data text-mono-data border border-outline-variant/30 font-bold">WINTER25</span>
+</td>
+<td class="px-gutter py-4 text-on-surface-variant">25% Percent Discount</td>
+<td class="px-gutter py-4">500 / 1000</td>
+<td class="px-gutter py-4 text-on-surface-variant">Dec 31, 2023</td>
+<td class="px-gutter py-4 text-center">
+<span class="inline-flex items-center gap-1.5 text-green-700 font-bold text-body-sm">
+<span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> Active
+                                            </span>
+</td>
+<td class="px-gutter py-4 text-right space-x-2">
+<button class="p-2 hover:bg-surface-container-high rounded text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button class="p-2 hover:bg-error-container/20 rounded text-error">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="px-gutter py-4">
+<span class="px-2 py-1 bg-surface-container-high rounded font-mono-data text-mono-data border border-outline-variant/30 font-bold">WELCOME10</span>
+</td>
+<td class="px-gutter py-4 text-on-surface-variant">$10.00 Fixed Amount</td>
+<td class="px-gutter py-4">Unlimited</td>
+<td class="px-gutter py-4 text-on-surface-variant">No Expiry</td>
+<td class="px-gutter py-4 text-center">
+<span class="inline-flex items-center gap-1.5 text-green-700 font-bold text-body-sm">
+<span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> Active
+                                            </span>
+</td>
+<td class="px-gutter py-4 text-right space-x-2">
+<button class="p-2 hover:bg-surface-container-high rounded text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button class="p-2 hover:bg-error-container/20 rounded text-error">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors opacity-60">
+<td class="px-gutter py-4">
+<span class="px-2 py-1 bg-surface-container-high rounded font-mono-data text-mono-data border border-outline-variant/30 font-bold">EXPIRED_BF</span>
+</td>
+<td class="px-gutter py-4 text-on-surface-variant">50% Percent Discount</td>
+<td class="px-gutter py-4">120 / 120</td>
+<td class="px-gutter py-4 text-on-surface-variant">Nov 29, 2022</td>
+<td class="px-gutter py-4 text-center">
+<span class="inline-flex items-center gap-1.5 text-on-surface-variant font-bold text-body-sm">
+<span class="w-2 h-2 rounded-full bg-outline"></span> Expired
+                                            </span>
+</td>
+<td class="px-gutter py-4 text-right space-x-2">
+<button class="p-2 hover:bg-surface-container-high rounded text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]">history</span>
+</button>
+<button class="p-2 hover:bg-error-container/20 rounded text-error">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+</div>
+<!-- Contextual Dashboard Insights (Bento Grid) -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="md:col-span-2 bg-surface-container-lowest border border-outline-variant rounded-xl p-stack-md flex flex-col justify-between">
+<div>
+<h4 class="font-title-md text-title-md font-bold mb-4">Regional Sales Heatmap</h4>
+<div class="h-64 rounded-lg overflow-hidden bg-surface-container-low relative">
+<div class="absolute inset-0 grayscale opacity-40" data-alt="A detailed grayscale minimalist world map showing highlighted regions in vibrant blue, signifying high sales activity areas. The lighting is soft and corporate, matching a data-driven admin dashboard aesthetic with clean topography and subtle glowing markers on major hub cities like New York, London, and Tokyo." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCFzgg4snsdYXRb3Tdjd9-duXGw-PYIU6KlkRIysRHFRftD1TCtKAuy5jzTjJ3cQaCiXGRyFFnLNy4Smd7t2QJeV7nlHDeDAvZze4zn3EAO0uNbmctYQHXt6DohLscmu8aLrpTsjSzaajpEe-G_bpVKKWuutGElS0STKu8EISrporBm1Lt43e0Mrj23xHZFgo5trNurXhOji4JVVOLikka6IDc3LzrXSixSdXNYg820sUXSdk2nlfuh')"></div>
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<span class="bg-white/90 px-4 py-2 rounded-full shadow-sm text-body-sm font-bold border border-outline-variant">Interactive Map Loading...</span>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-stack-md flex flex-col">
+<h4 class="font-title-md text-title-md font-bold mb-4">Top Coupon Performance</h4>
+<div class="space-y-4 flex-1">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface-variant">WINTER25</span>
+<span class="font-bold">642 Uses</span>
+</div>
+<div class="w-full bg-surface-container-high h-2 rounded-full">
+<div class="bg-secondary h-full rounded-full w-[85%]"></div>
+</div>
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface-variant">WELCOME10</span>
+<span class="font-bold">211 Uses</span>
+</div>
+<div class="w-full bg-surface-container-high h-2 rounded-full">
+<div class="bg-secondary h-full rounded-full w-[45%]"></div>
+</div>
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface-variant">FLASH30</span>
+<span class="font-bold">89 Uses</span>
+</div>
+<div class="w-full bg-surface-container-high h-2 rounded-full">
+<div class="bg-secondary h-full rounded-full w-[15%]"></div>
+</div>
+</div>
+<button class="mt-6 w-full py-2 text-secondary font-bold hover:bg-secondary-container/10 transition-colors rounded">View Analytics</button>
+</div>
+</div>
+</div>
+</main>
+<!-- Contextual FAB - Restricted to Dashboard/Management Screens -->
+<button class="fixed bottom-gutter right-gutter w-14 h-14 bg-secondary text-on-secondary rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-50">
+<span class="material-symbols-outlined text-3xl">add</span>
+</button>
+<script>
+        function switchTab(view) {
+            const ordersView = document.getElementById('view-orders');
+            const couponsView = document.getElementById('view-coupons');
+            const btnOrders = document.getElementById('tab-orders');
+            const btnCoupons = document.getElementById('tab-coupons');
+
+            if (view === 'orders') {
+                // Show Orders
+                ordersView.classList.remove('hidden', 'opacity-0', 'translate-y-4');
+                ordersView.classList.add('opacity-100', 'translate-y-0');
+                
+                couponsView.classList.add('hidden', 'opacity-0', 'translate-y-4');
+                couponsView.classList.remove('opacity-100', 'translate-y-0');
+
+                // Update Buttons
+                btnOrders.classList.add('bg-surface-container-lowest', 'text-primary', 'shadow-sm');
+                btnOrders.classList.remove('text-on-surface-variant');
+                btnCoupons.classList.remove('bg-surface-container-lowest', 'text-primary', 'shadow-sm');
+                btnCoupons.classList.add('text-on-surface-variant');
+            } else {
+                // Show Coupons
+                couponsView.classList.remove('hidden', 'opacity-0', 'translate-y-4');
+                couponsView.classList.add('opacity-100', 'translate-y-0');
+                
+                ordersView.classList.add('hidden', 'opacity-0', 'translate-y-4');
+                ordersView.classList.remove('opacity-100', 'translate-y-0');
+
+                // Update Buttons
+                btnCoupons.classList.add('bg-surface-container-lowest', 'text-primary', 'shadow-sm');
+                btnCoupons.classList.remove('text-on-surface-variant');
+                btnOrders.classList.remove('bg-surface-container-lowest', 'text-primary', 'shadow-sm');
+                btnOrders.classList.add('text-on-surface-variant');
+            }
+        }
+
+        // Simple Mobile Menu Toggle
+        document.querySelector('button.lg\\:hidden').addEventListener('click', () => {
+            const sidenav = document.getElementById('side-nav');
+            if (sidenav.classList.contains('hidden')) {
+                sidenav.classList.remove('hidden');
+                sidenav.classList.add('flex', 'w-64');
+            } else {
+                sidenav.classList.add('hidden');
+                sidenav.classList.remove('flex', 'w-64');
+            }
+        });
+    </script>
+</body></html>
